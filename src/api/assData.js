@@ -2,7 +2,7 @@
 import request from '../utils/request'
 
 /**
- * 查询所有未启动车辆的信息
+ * 获取系统数据（系统成员+社团数量+活动数量）（首页展示）
  * @returns {AxiosPromise}
  */
 export const findsystemData = () => {

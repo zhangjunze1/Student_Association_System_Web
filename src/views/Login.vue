@@ -25,6 +25,7 @@
           </div>
         </el-form-item>
         <el-form-item class="login_btn">
+          <el-button type="warning" @click="back">返回</el-button>
           <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
           <el-button @click="resetForm('loginForm')">重置</el-button>
         </el-form-item>
@@ -47,7 +48,7 @@ export default {
       },
       loginRules: {
         admin: [
-          { required: true, message: '请输入管理用户名', trigger: 'blur' },
+          { required: true, message: '请输入用户名', trigger: 'blur' },
           { min: 1, max: 12, message: '请输入1-12位', trigger: 'blur' }
         ],
         password: [
@@ -75,6 +76,9 @@ export default {
       })
       this.getadminLogin()
       // 获取admin的信息
+    },
+    back () {
+      this.$router.push('/home')
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()

@@ -1,10 +1,9 @@
 <template>
   <div class="home">
     <el-row :gutter="0">
-      <el-col :span="10" :offset="19" class="top" style="margin-top: 11px">
-        <el-button :span="1" type="primary" size="mini" @click="gotoAdminlogin">管理登录</el-button>
+      <el-col :span="10" :offset="21" class="top" style="margin-top: 11px">
         <el-button :span="1" type="primary" size="mini" @click="gotologin">成员登录</el-button>
-        <el-button :span="1" type="" size="mini" @click="UserRegister">成员注册</el-button>
+        <el-button :span="1" type="warning" size="mini" @click="UserRegister">成员注册</el-button>
       </el-col>
     </el-row>
     <el-row style="margin-top: 100px;margin-left: 300px">
@@ -15,7 +14,7 @@
 
     <el-row style="margin-top: 200px;margin-left: 300px">
       <el-col :span="8" class="t1">
-        <div class="text text1" >{{ systemNum }}</div>
+        <div class="text text1" >{{ memberNum }}</div>
         <div class="textt tt1" >系统成员</div>
       </el-col>
       <el-col :span="8" class="t2">
@@ -40,7 +39,7 @@ export default {
   components: {},
   data () {
     return {
-      systemNum: 111,
+      memberNum: 111,
       assNum: 2222,
       activityNum: 33333
     }
@@ -51,18 +50,15 @@ export default {
   methods: {
     async getsystemData () {
       const { data } = await findsystemData()
-      this.systemNum = data.data.systemNum
+      this.memberNum = data.data.memberNum
       this.assNum = data.data.assNum
       this.activityNum = data.data.activityNum
     },
     gotologin () {
       this.$router.push('/login')
     },
-    guestEnter () {
-      this.$router.push('/host')
-    },
-    gotoAdminlogin () {
-
+    UserRegister () {
+      this.$router.push('/register')
     }
   }
 }
