@@ -38,3 +38,32 @@ export const userLogin = (number, password) => {
     }
   })
 }
+
+/**
+ * 查找对应权限的人数
+ * @returns {AxiosPromise}
+ */
+export const findAuthorityAndCount = () => {
+  return request({
+    url: '/user/findAuthorityAndCount',
+    method: 'GET'
+  })
+}
+
+/**
+ * 条件查询所有用户
+ * @returns {AxiosPromise}
+ */
+export const findqueryUserList = (current, size, userTrueName, assName, position) => {
+  return request({
+    url: '/user/findqueryUserList',
+    method: 'GET',
+    params: {
+      current,
+      size,
+      userTrueName,
+      assName,
+      position
+    }
+  })
+}

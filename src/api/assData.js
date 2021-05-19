@@ -13,3 +13,14 @@ export const findsystemData = () => {
     }
   })
 }
+
+/**
+ * 获取社团列表
+ * @returns {AxiosPromise}
+ */
+export const findAssList = () => {
+  return request({
+    url: '/ass/findAssList',
+    method: 'get'
+  })
+}

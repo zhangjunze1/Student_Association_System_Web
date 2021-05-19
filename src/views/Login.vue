@@ -113,6 +113,7 @@ export default {
         this.$root.USER.pic = data.data.user.userPic
         this.$root.USER.token = data.data.token
         console.log(this.$root.USER.id)
+        console.log(this.$root.USER.name)
         this.$message({
           message: '登录成功',
           type: 'success',

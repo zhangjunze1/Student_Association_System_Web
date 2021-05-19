@@ -26,8 +26,8 @@
     <el-container>
       <!--头部布局-->
       <el-header >
-        <div class="left_box" >
-        </div>
+        <span style="margin-right: 20px; font-size: 18px;color: black;size: 20px">{{this.$root.USER.trueName }}{{this.$root.USER.position }},欢迎你的归来！</span>
+
         <div class="right_box">
           <el-dropdown>
             <img src="../assets/img/timg.jpg">
