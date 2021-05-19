@@ -12,8 +12,8 @@
       </div>
       <!--表单-->
       <el-form :model="loginForm" :rules="loginRules" ref="loginForm" label- width="0px" class="login_form">
-        <el-form-item prop="admin">
-          <el-input v-model="loginForm.admin" placeholder="请输入管理用户名" prefix-icon="el-icon-user-solid"></el-input>
+        <el-form-item prop="number">
+          <el-input v-model="loginForm.number" placeholder="请输入学号" prefix-icon="el-icon-user-solid"></el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input type="password" v-model="loginForm.password" placeholder="请输入登录密码" prefix-icon="el-icon-lock"></el-input>
@@ -35,21 +35,22 @@
 </template>
 
 <script>
-import { adminLogin } from '@/api/admin'
+
+import { userLogin } from '@/api/user'
 
 export default {
   name: 'Login',
   data () {
     return {
       loginForm: {
-        admin: '',
+        number: '',
         password: '',
         verifyCode: ''
       },
       loginRules: {
-        admin: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 1, max: 12, message: '请输入1-12位', trigger: 'blur' }
+        number: [
+          { required: true, message: '请输入学号', trigger: 'blur' },
+          { min: 4, max: 9, message: '学号格式不正确', trigger: 'blur' }
         ],
         password: [
           { required: true, message: '请输入登录密码', trigger: 'blur' },
@@ -74,7 +75,7 @@ export default {
           return false
         }
       })
-      this.getadminLogin()
+      this.getuserLogin()
       // 获取admin的信息
     },
     back () {
@@ -83,28 +84,35 @@ export default {
     resetForm (formName) {
       this.$refs[formName].resetFields()
     },
-    async getadminLogin () {
-      // eslint-disable-next-line no-unused-vars
-      const { data } = await adminLogin(this.loginForm.admin, this.loginForm.password)
+    async getuserLogin () {
+      const { data } = await userLogin(this.loginForm.number, this.loginForm.password)
       console.log(data)
-      // eslint-disable-next-line no-undef
-      this.$store.commit('getToken', data.data.token)
-      this.$store.commit('getData', data.data.shop)
-      console.log(this.$store.state.token)
-      console.log(this.$store.state.data)
-      if (data.code === 4001) {
+
+      if (data.code === 3012) {
         this.$message({
-          message: '本管理员用户名不存在',
+          message: data.message,
           type: 'warning',
           duration: 2000
         })
-      } else if (data.code === 4002) {
+      } else if (data.code === 3018) {
         this.$message({
-          message: '管理员用户名对应密码错误',
+          message: data.message,
           type: 'warning',
           duration: 2000
         })
       } else if (data.code === 20000) {
+        this.$root.USER.id = data.data.user.userId
+        this.$root.USER.name = data.data.user.userName
+        this.$root.USER.trueName = data.data.user.userTrueName
+        this.$root.USER.authority = data.data.user.userAuthority
+        this.$root.USER.score = data.data.user.userScore
+        this.$root.USER.number = data.data.user.userNumber
+        this.$root.USER.gender = data.data.user.userGender
+        this.$root.USER.position = data.data.user.userPosition
+        this.$root.USER.phone = data.data.user.userPhone
+        this.$root.USER.pic = data.data.user.userPic
+        this.$root.USER.token = data.data.token
+        console.log(this.$root.USER.id)
         this.$message({
           message: '登录成功',
           type: 'success',
@@ -115,6 +123,39 @@ export default {
         })
       }
     }
+
+    // async getadminLogin () {
+    //   // eslint-disable-next-line no-unused-vars
+    //   const { data } = await adminLogin(this.loginForm.admin, this.loginForm.password)
+    //   console.log(data)
+    //   // eslint-disable-next-line no-undef
+    //   this.$store.commit('getToken', data.data.token)
+    //   this.$store.commit('getData', data.data.shop)
+    //   console.log(this.$store.state.token)
+    //   console.log(this.$store.state.data)
+    //   if (data.code === 4001) {
+    //     this.$message({
+    //       message: '本管理员用户名不存在',
+    //       type: 'warning',
+    //       duration: 2000
+    //     })
+    //   } else if (data.code === 4002) {
+    //     this.$message({
+    //       message: '管理员用户名对应密码错误',
+    //       type: 'warning',
+    //       duration: 2000
+    //     })
+    //   } else if (data.code === 20000) {
+    //     this.$message({
+    //       message: '登录成功',
+    //       type: 'success',
+    //       duration: 2000,
+    //       onClose: () => {
+    //         this.$router.push('/main')
+    //       }
+    //     })
+    //   }
+    // }
   }
 }
 </script>

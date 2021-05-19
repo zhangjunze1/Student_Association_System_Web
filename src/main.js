@@ -24,6 +24,23 @@ Vue.config.productionTip = false
 
 new Vue({
   router,
+  data: function () {
+    return {
+      USER: [{
+        name: null,
+        id: null,
+        trueName: null,
+        authority: null,
+        score: null,
+        number: null,
+        gender: null,
+        position: null,
+        token: null,
+        phone: null,
+        pic: null
+      }]
+    }
+  },
   store,
   render: h => h(App)
 }).$mount('#app')

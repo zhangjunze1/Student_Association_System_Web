@@ -21,3 +21,20 @@ export const userRegister = (name, true_name, pwd, repwd, phone, number, gender)
     }
   })
 }
+
+/**
+ * 用户登录
+ * @param number
+ * @param password
+ * @returns {AxiosPromise}
+ */
+export const userLogin = (number, password) => {
+  return request({
+    url: '/user/userLogin',
+    method: 'POST',
+    params: {
+      number,
+      password
+    }
+  })
+}

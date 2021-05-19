@@ -113,8 +113,8 @@ export default {
           })
           return false
         }
+        this.MyuserRegister()
       })
-      this.MyuserRegister()
     },
     back () {
       this.$router.push('/home')
