@@ -20,7 +20,7 @@
         :collapse-transition="false"
         :unique-opened="true"
         :router="true">
-        <MenuTree></MenuTree>
+        <MenuTree2></MenuTree2>
       </el-menu>
     </el-aside>
     <el-container>
@@ -49,10 +49,10 @@
 
 <script>
 // eslint-disable-next-line no-unused-vars
-import MenuTree from '@/components/MenuTree'
+import MenuTree2 from '@/components/MenuTree2'
 export default {
-  name: 'Main',
-  components: { MenuTree },
+  name: 'Main2',
+  components: { MenuTree2 },
   data () {
     return {
       isCollapse: false

@@ -2,44 +2,48 @@
   <div>
     <template>
 
-        <!--        <el-menu-item index="/welcome" >-->
-        <!--          <i class="el-icon-star-off"></i>-->
-        <!--          <span slot="title">控制面板</span>-->
-        <!--        </el-menu-item>-->
-        <el-menu-item index="/host" >
-          <i class="el-icon-s-home"></i>
-          <span slot="title">主界面</span>
-        </el-menu-item>
+      <!--        <el-menu-item index="/welcome" >-->
+      <!--          <i class="el-icon-star-off"></i>-->
+      <!--          <span slot="title">控制面板</span>-->
+      <!--        </el-menu-item>-->
+      <el-menu-item index="/host1" >
+        <i class="el-icon-s-home"></i>
+        <span slot="title">主界面</span>
+      </el-menu-item>
 
       <el-submenu index="/AssManage">
         <template slot="title">
           <i class="el-icon-tickets"></i>
           <span>社团相关</span>
         </template>
-        <el-menu-item index="/apply">
+        <el-menu-item index="/apply1">
           <i class="el-icon-magic-stick"></i>
           <span slot="title">社团成立</span>
         </el-menu-item>
-        <el-menu-item index="/enroll">
+        <el-menu-item index="/enroll1">
           <i class="el-icon-chat-dot-round"></i>
           <span slot="title">社团报名</span>
         </el-menu-item>
+        <el-menu-item index="/assControl">
+          <i class="el-icon-s-tools"></i>
+          <span slot="title">管理社团</span>
+        </el-menu-item>
       </el-submenu>
 
-      <el-submenu index="/MyCenter" >
+      <el-submenu index="/MyCenter1" >
         <template slot="title">
           <i class="el-icon-camera-solid"></i>
           <span>我的中心</span>
         </template>
-        <el-menu-item index="/preActivity">
+        <el-menu-item index="/preActivity1">
           <i class="el-icon-document-copy"></i>
           <span slot="title">活动记录</span>
         </el-menu-item>
-        <el-menu-item index="/myAss">
+        <el-menu-item index="/myAss1">
           <i class="el-icon-aim"></i>
           <span slot="title">我的社团</span>
         </el-menu-item>
-        <el-menu-item index="/mine">
+        <el-menu-item index="/mine1">
           <i class="el-icon-notebook-1"></i>
           <span slot="title">个人资料</span>
         </el-menu-item>
@@ -50,7 +54,7 @@
 
 <script>
 export default {
-  name: 'MenuTree'
+  name: 'MenuTree1'
 }
 </script>
 

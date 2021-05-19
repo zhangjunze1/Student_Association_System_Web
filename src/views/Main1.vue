@@ -2,7 +2,7 @@
   <el-container class="main_container">
     <!--侧边栏-->
     <el-aside :width="isCollapse?'64px':'200px'">
-      <div class="title_box_main">
+      <div class="title_box_main1">
         <i style="margin-right: 8px" class="el-icon-odometer"></i>
         <span >学生社团管理系统</span>
       </div>
@@ -20,7 +20,7 @@
         :collapse-transition="false"
         :unique-opened="true"
         :router="true">
-        <MenuTree></MenuTree>
+        <MenuTree1></MenuTree1>
       </el-menu>
     </el-aside>
     <el-container>
@@ -49,10 +49,12 @@
 
 <script>
 // eslint-disable-next-line no-unused-vars
-import MenuTree from '@/components/MenuTree'
+
+import MenuTree1 from '@/components/MenuTree1'
+
 export default {
-  name: 'Main',
-  components: { MenuTree },
+  name: 'Main1',
+  components: { MenuTree1 },
   data () {
     return {
       isCollapse: false
@@ -135,7 +137,7 @@ span{
   text-align: center;
   cursor: pointer;
 }
-.title_box_main{
+.title_box_main1{
   display: flex;
   align-items: center;
   font-size: 20px;

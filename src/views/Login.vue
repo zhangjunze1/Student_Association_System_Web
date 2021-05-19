@@ -118,7 +118,15 @@ export default {
           type: 'success',
           duration: 2000,
           onClose: () => {
-            this.$router.push('/main')
+            // eslint-disable-next-line eqeqeq
+            if (this.$root.USER.authority == 0) {
+              this.$router.push('/main')
+              // eslint-disable-next-line eqeqeq
+            } else if (this.$root.USER.authority == 1) {
+              this.$router.push('/main1')
+            } else {
+              this.$router.push('/main2')
+            }
           }
         })
       }
@@ -172,11 +180,6 @@ export default {
   text-shadow: 1px -1px black, 2px -2px white;
   text-align: center;
   opacity: 0.55;
-}
-
-.login_container {
-  height: 100%;
-  background-color: #708090;
 }
 
 .login_box {
