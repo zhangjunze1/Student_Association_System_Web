@@ -67,3 +67,26 @@ export const findqueryUserList = (current, size, userTrueName, assName, position
     }
   })
 }
+
+/**
+ * 修改个人信息
+ * @param id
+ * @param name
+ * @param gender
+ * @param phone
+ * @param signature
+ * @returns {AxiosPromise}
+ */
+export const editUserMessage = (userId, name, gender, phone, signature) => {
+  return request({
+    url: '/user/editUserMessage',
+    method: 'POST',
+    params: {
+      userId,
+      name,
+      gender,
+      phone,
+      signature
+    }
+  })
+}

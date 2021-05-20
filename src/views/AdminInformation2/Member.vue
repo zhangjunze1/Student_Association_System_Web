@@ -49,6 +49,7 @@
 
     <!--表格内容显示区域-->
     <el-table
+      v-loading="loading"
       :data="MemberList"
       border
       max-height="380px"
@@ -143,7 +144,8 @@ export default {
       // 所有人员集合
       MemberList: [],
       // 社团列表
-      assList: []
+      assList: [],
+      loading: true
     }
   },
   created () {
@@ -181,6 +183,7 @@ export default {
         this.formInline.userTrueName, this.formInline.assName, this.formInline.position)
       this.MemberList = data.data.userList
       this.total = data.data.total
+      this.loading = false
       console.log('current:' + data.data.current)
       console.log('total:' + data.data.total)
       console.log(data)

@@ -37,7 +37,9 @@ new Vue({
         position: null,
         token: null,
         phone: null,
-        pic: null
+        pic: null,
+        signature: null,
+        pwd: null
       }]
     }
   },

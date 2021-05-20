@@ -105,6 +105,7 @@ export default {
       } else if (data.code === 20000) {
         this.$root.USER.id = data.data.user.userId
         this.$root.USER.name = data.data.user.userName
+        this.$root.USER.pwd = data.data.user.userPwd
         this.$root.USER.trueName = data.data.user.userTrueName
         this.$root.USER.authority = data.data.user.userAuthority
         this.$root.USER.score = data.data.user.userScore
@@ -114,6 +115,7 @@ export default {
         this.$root.USER.phone = data.data.user.userPhone
         this.$root.USER.pic = data.data.user.userPic
         this.$root.USER.token = data.data.token
+        this.$root.USER.signature = data.data.userSignature
         console.log(this.$root.USER.id)
         console.log(this.$root.USER.name)
         this.$notify({

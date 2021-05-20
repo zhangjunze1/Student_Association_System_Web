@@ -20,6 +20,7 @@
       </el-form>
       <!--表格内容显示区域-->
       <el-table
+        v-loading="loading"
         :data="assList"
         border
         max-height="380px"
@@ -95,7 +96,8 @@ export default {
       // 总条数
       total: 200,
       // 所有社团集合
-      assList: []
+      assList: [],
+      loading: true
     }
   },
   created () {
@@ -107,6 +109,7 @@ export default {
       console.log(data)
       this.assList = data.data.Ass
       this.total = data.data.total
+      this.loading = false
     },
     onSubmit () {
       console.log('submit!')
@@ -132,5 +135,7 @@ export default {
 </script>
 
 <style scoped>
-
+body {
+  margin: 0;
+}
 </style>
