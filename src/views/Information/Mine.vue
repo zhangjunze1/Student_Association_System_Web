@@ -42,7 +42,7 @@
         </el-tooltip>
       </el-form-item>
       <el-form-item label="个性签名" style="width: 800px">
-        <el-input type="textarea" v-model="form.signature"></el-input>
+        <el-input  v-model="form.signature" style="height: 50px"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">修改</el-button>
