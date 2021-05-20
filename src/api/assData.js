@@ -24,3 +24,20 @@ export const findAssList = () => {
     method: 'get'
   })
 }
+
+/**
+ * 获取社团列表分页
+ * @param current
+ * @param size
+ * @returns {AxiosPromise}
+ */
+export const findAssListPage = (current, size) => {
+  return request({
+    url: '/ass/findAssListPage',
+    method: 'get',
+    params: {
+      current,
+      size
+    }
+  })
+}

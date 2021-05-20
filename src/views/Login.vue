@@ -67,7 +67,7 @@ export default {
       // eslint-disable-next-line no-unused-expressions
       this.$refs[loginForm].validate(valid => {
         if (!valid) {
-          this.$message({
+          this.$notify({
             message: '请完整输入',
             type: 'warning',
             duration: 1200
@@ -89,13 +89,15 @@ export default {
       console.log(data)
 
       if (data.code === 3012) {
-        this.$message({
+        this.$notify({
+          title: '警告',
           message: data.message,
           type: 'warning',
           duration: 2000
         })
       } else if (data.code === 3018) {
-        this.$message({
+        this.$notify({
+          title: '警告',
           message: data.message,
           type: 'warning',
           duration: 2000
@@ -114,7 +116,8 @@ export default {
         this.$root.USER.token = data.data.token
         console.log(this.$root.USER.id)
         console.log(this.$root.USER.name)
-        this.$message({
+        this.$notify({
+          title: '成功',
           message: '登录成功',
           type: 'success',
           duration: 2000,

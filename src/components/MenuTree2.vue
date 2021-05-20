@@ -21,15 +21,15 @@
           <span slot="title">社团管理</span>
         </el-menu-item>
         <el-menu-item index="/member">
-          <i class="el-icon-magic-stick"></i>
+          <i class="el-icon-s-custom"></i>
           <span slot="title">成员管理</span>
         </el-menu-item>
         <el-menu-item index="/activity">
-          <i class="el-icon-magic-stick"></i>
+          <i class="el-icon-office-building"></i>
           <span slot="title">活动管理</span>
         </el-menu-item>
         <el-menu-item index="/notice">
-          <i class="el-icon-magic-stick"></i>
+          <i class="el-icon-collection-tag"></i>
           <span slot="title">公告管理</span>
         </el-menu-item>
       </el-submenu>

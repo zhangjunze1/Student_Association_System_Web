@@ -126,38 +126,42 @@ export default {
       const { data } = await userRegister(this.registerForm.name, this.registerForm.true_name, this.registerForm.pwd, this.registerForm.repwd
         , this.registerForm.phone, this.registerForm.number, this.registerForm.gender)
       if (data.code === 3014) {
-        this.$message({
+        this.$notify({
+          title: '警告',
           message: data.message,
           type: 'warning',
           duration: 1200
         })
       } else if (data.code === 3015) {
-        this.$message({
+        this.$notify({
+          title: '警告',
           message: data.message,
           type: 'warning',
           duration: 1200
         })
       } else if (data.code === 3016) {
-        this.$message({
+        this.$notify({
+          title: '警告',
           message: data.message,
           type: 'warning',
           duration: 1200
         })
       } else if (data.code === 3017) {
-        this.$message({
+        this.$notify({
+          title: '警告',
           message: data.message,
           type: 'warning',
           duration: 1200
         })
       } else if (data.code === 20000) {
-        this.$message({
+        this.$notify({
           message: '注册成功',
           type: 'success',
           duration: 1200
         })
         this.$router.push('/login')
       } else {
-        this.$message({
+        this.$notify({
           message: '失败',
           type: 'warning',
           duration: 1200

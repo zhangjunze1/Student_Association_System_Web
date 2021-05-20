@@ -46,6 +46,7 @@
         </el-form-item>
       </el-row>
     </el-form>
+
     <!--表格内容显示区域-->
     <el-table
       :data="MemberList"
@@ -73,18 +74,18 @@
         width="150">
       </el-table-column>
       <el-table-column
-        prop="userPhone"
-        label="手机号码"
-        width="200">
-      </el-table-column>
-      <el-table-column
         prop="userPosition"
         label="职位"
         width="100">
       </el-table-column>
       <el-table-column
         prop="userGender"
-        label="性别">
+        label="性别"
+        width="100">
+      </el-table-column>
+      <el-table-column
+        prop="userPhone"
+        label="手机号码">
       </el-table-column>
       <el-table-column
         label="操作"
