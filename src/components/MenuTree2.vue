@@ -48,6 +48,11 @@
           <span slot="title">活动审批</span>
         </el-menu-item>
       </el-submenu>
+
+      <el-menu-item index="/mine2">
+        <i class="el-icon-notebook-1"></i>
+        <span slot="title">个人资料</span>
+      </el-menu-item>
     </template>
   </div>
 </template>

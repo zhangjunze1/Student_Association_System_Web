@@ -42,10 +42,10 @@
         </el-tooltip>
       </el-form-item>
       <el-form-item label="个性签名" style="width: 800px">
-        <el-input  v-model="form.signature" style="height: 50px"></el-input>
+        <el-input type="textarea" v-model="form.signature"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">修改</el-button>
+        <el-button type="primary" @click="onSubmit">修改/更新</el-button>
         <el-button  @click="resetform">重置</el-button>
       </el-form-item>
     </el-form>
@@ -77,20 +77,24 @@ export default {
     }
   },
   created () {
-    this.percent = this.$root.USER.score / 150
-    this.form.id = this.$root.USER.id
-    this.form.name = this.$root.USER.name
-    this.form.password = this.$root.USER.pwd
-    this.form.trueName = this.$root.USER.trueName
-    this.form.gender = this.$root.USER.gender
-    this.form.delivery = false
-    this.form.number = this.$root.USER.number
-    this.form.position = this.$root.USER.position
-    this.form.signature = this.$root.USER.signature
-    this.form.phone = this.$root.USER.phone
-    this.form.score = this.$root.USER.score
+    console.log(this.$root.USER.signature)
+    this.initMessage()
   },
   methods: {
+    initMessage () {
+      this.percent = this.$root.USER.score / 1.5
+      this.form.id = this.$root.USER.id
+      this.form.name = this.$root.USER.name
+      this.form.password = this.$root.USER.pwd
+      this.form.trueName = this.$root.USER.trueName
+      this.form.gender = this.$root.USER.gender
+      this.form.delivery = false
+      this.form.number = this.$root.USER.number
+      this.form.position = this.$root.USER.position
+      this.form.signature = this.$root.USER.signature
+      this.form.phone = this.$root.USER.phone
+      this.form.score = this.$root.USER.score
+    },
     async onSubmit () {
       // eslint-disable-next-line eqeqeq
       if (this.form.password !== this.$root.USER.pwd) {
@@ -108,22 +112,32 @@ export default {
           return this.$message.info('已经取消更改')
         }
       }
-      const { data } = await editUserMessage(this.$root.USER.id, this.form.name, this.form.gender, this.form.phone, this.form.signature)
+      const { data } = await editUserMessage(this.$root.USER.id, this.form.password, this.form.name, this.form.gender, this.form.phone, this.form.signature)
+      if (data.code === 20000) {
+        this.$root.USER.id = data.data.user.userId
+        this.$root.USER.name = data.data.user.userName
+        this.$root.USER.pwd = data.data.user.userPwd
+        this.$root.USER.trueName = data.data.user.userTrueName
+        this.$root.USER.authority = data.data.user.userAuthority
+        this.$root.USER.score = data.data.user.userScore
+        this.$root.USER.number = data.data.user.userNumber
+        this.$root.USER.gender = data.data.user.userGender
+        this.$root.USER.position = data.data.user.userPosition
+        this.$root.USER.phone = data.data.user.userPhone
+        this.$root.USER.pic = data.data.user.userPic
+        this.$root.USER.signature = data.data.user.userSignature
+        this.initMessage()
+        this.$notify({
+          title: '成功',
+          message: '修改成功',
+          type: 'success',
+          duration: 2000
+        })
+      }
       console.log(data)
     },
     resetform () {
-      this.percent = this.$root.USER.score / 1.5
-      this.form.id = this.$root.USER.id
-      this.form.name = this.$root.USER.name
-      this.form.password = this.$root.USER.pwd
-      this.form.trueName = this.$root.USER.trueName
-      this.form.gender = this.$root.USER.gender
-      this.form.delivery = false
-      this.form.number = this.$root.USER.number
-      this.form.position = this.$root.USER.position
-      this.form.signature = this.$root.USER.signature
-      this.form.phone = this.$root.USER.phone
-      this.form.score = this.$root.USER.score
+      this.initMessage()
     }
   }
 }

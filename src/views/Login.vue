@@ -115,9 +115,10 @@ export default {
         this.$root.USER.phone = data.data.user.userPhone
         this.$root.USER.pic = data.data.user.userPic
         this.$root.USER.token = data.data.token
-        this.$root.USER.signature = data.data.userSignature
+        this.$root.USER.signature = data.data.user.userSignature
         console.log(this.$root.USER.id)
         console.log(this.$root.USER.name)
+        console.log(this.$root.USER.signature)
         this.$notify({
           title: '成功',
           message: '登录成功',

@@ -27,6 +27,7 @@ new Vue({
   data: function () {
     return {
       USER: [{
+        signature: '',
         name: null,
         id: null,
         trueName: null,
@@ -38,7 +39,6 @@ new Vue({
         token: null,
         phone: null,
         pic: null,
-        signature: null,
         pwd: null
       }]
     }

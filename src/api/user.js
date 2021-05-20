@@ -77,12 +77,13 @@ export const findqueryUserList = (current, size, userTrueName, assName, position
  * @param signature
  * @returns {AxiosPromise}
  */
-export const editUserMessage = (userId, name, gender, phone, signature) => {
+export const editUserMessage = (userId, pwd, name, gender, phone, signature) => {
   return request({
     url: '/user/editUserMessage',
     method: 'POST',
     params: {
       userId,
+      pwd,
       name,
       gender,
       phone,

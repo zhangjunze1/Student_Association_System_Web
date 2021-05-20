@@ -41,3 +41,22 @@ export const findAssListPage = (current, size) => {
     }
   })
 }
+
+/**
+ * 获取我的社团列表分页
+ * @param current
+ * @param size
+ * @param userId
+ * @returns {AxiosPromise}
+ */
+export const findMyAssListPage = (current, size, userId) => {
+  return request({
+    url: '/ass/findMyAssListPage',
+    method: 'get',
+    params: {
+      current,
+      size,
+      userId
+    }
+  })
+}

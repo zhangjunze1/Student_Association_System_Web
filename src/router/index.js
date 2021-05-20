@@ -57,6 +57,11 @@ const routes = [
         path: '/mine',
         name: 'Mine',
         component: () => import('../views/Information/Mine.vue')
+      },
+      {
+        path: '/myAss/:assId/activity',
+        name: 'AssItem',
+        component: () => import('../views/Information/AssItem.vue')
       }
     ]
   },
@@ -141,6 +146,11 @@ const routes = [
         path: '/controlAct',
         name: 'ControlAct',
         component: () => import('../views/AdminInformation2/ControlAct.vue')
+      },
+      {
+        path: '/mine2',
+        name: 'Mine2',
+        component: () => import('../views/AdminInformation2/Mine2.vue')
       }
     ]
   }

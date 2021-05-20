@@ -1,47 +1,56 @@
 <template>
   <div>
-    <div>
-      <!--面包屑-->
-      <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 10px;padding-bottom: 10px;font-size: 12px">
-        <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>我的中心</el-breadcrumb-item>
-        <el-breadcrumb-item>我的社团</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div>
-
+    <el-page-header @back="goBack" :content="this.$route.query.name" >
+    </el-page-header>
     <!--车辆列表卡片-->
-    <el-card class="box-card" >
+    <el-card class="box-card" style="margin-top: 20px">
       <!--表格内容显示区域-->
+<!--      @row-dblclick='handleTaskItemClick'-->
       <el-table
         v-loading="loading"
-        :data="myAssList"
-        @row-dblclick='handleTaskItemClick'
+        :data="activityList"
         border
         max-height="380px"
         style="width: 100%;">
         <el-table-column
-          prop="assId"
-          label="社团编号"
+          prop="activityId"
+          label="活动编号"
           width="100">
         </el-table-column>
         <el-table-column
-          prop="assName"
-          label="社团名字"
+          prop="activitySub"
+          label="活动主题"
           width="150">
         </el-table-column>
         <el-table-column
-          prop="assPositon"
-          label="社团位置"
+          prop="activityContent"
+          label="内容"
           width="150">
         </el-table-column>
         <el-table-column
-          prop="assTeacher"
-          label="指导老师"
-          width="150">
+          prop="activityStartTime"
+          label="开始时间"
+          width="180">
         </el-table-column>
         <el-table-column
-          prop=""
-          label="">
+          prop="activityFinishTime"
+          label="结束时间"
+          width="180">
+        </el-table-column>
+        <el-table-column
+          prop="activityState"
+          label="状态"
+          width="100">
+        </el-table-column>
+        <el-table-column
+          prop="activityScore"
+          label="活动分值"
+          width="60">
+        </el-table-column>
+        <el-table-column
+          prop="activityLeaderName"
+          label="申报社长"
+          >
         </el-table-column>
         <el-table-column
           label="操作"
@@ -69,14 +78,15 @@
     </el-card>
 
   </div>
+
 </template>
 
 <script>
 
-import { findMyAssListPage } from '@/api/assData'
+import { findAssActivityPage } from '@/api/activity'
 
 export default {
-  name: 'MyAss',
+  name: 'AssItem',
   data () {
     return {
       // 当前页
@@ -85,15 +95,27 @@ export default {
       pageSize: 6,
       // 总条数
       total: 200,
-      // 所有社团集合
-      myAssList: [],
+      activityList: [],
+      ass: [],
       loading: true
     }
   },
   created () {
-    this.getMyAssListPage()
+    this.getAssActivity()
+    console.log(this.$route.params.assId)
+    console.log(this.$route.query.name)
   },
   methods: {
+    goBack () {
+      this.$router.back()
+    },
+    async getAssActivity () {
+      const { data } = await findAssActivityPage(this.current, this.pageSize, this.$route.params.assId)
+      this.activityList = data.data.activities
+      console.log(data)
+      this.total = data.data.total
+      this.loading = false
+    },
     onSubmit () {
       console.log('submit!')
     },
@@ -103,36 +125,14 @@ export default {
       console.log(`每页 ${val} 条`)
       // 将val赋值给size
       this.pageSize = val
-      // 重新去后台查询数据
-      this.getMyAssListPage()
+      this.getAssActivity()
     },
     // 当页码改变的时候
     handleCurrentChange (val) {
       // eslint-disable-next-line no-template-curly-in-string
       console.log(`当前页: ${val}`)
       this.current = val
-      this.getMyAssListPage()
-    },
-    handleTaskItemClick (e) {
-      console.log(e.assName)
-      this.$router.push({ path: '/myAss/' + e.assId + '/activity', query: { name: e.assName } })
-    },
-    async getMyAssListPage () {
-      const { data } = await findMyAssListPage(this.current, this.pageSize, this.$root.USER.id)
-      console.log(data)
-      // eslint-disable-next-line eqeqeq
-      if (data.code == 3020) {
-        this.$message({
-          message: '您尚未参加任何社团噢~',
-          type: 'warning'
-        })
-      } else {
-        this.myAssList = data.data.myAssList
-        this.total = data.data.total
-      }
-      // eslint-disable-next-line eqeqeq
-
-      this.loading = false
+      this.getAssActivity()
     }
   }
 }
