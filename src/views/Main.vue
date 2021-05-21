@@ -43,6 +43,9 @@
         <!--路由视图-->
         <router-view></router-view>
       </el-main>
+      <el-footer style="height: 25px;text-align: center;background: #F0F8FF" >
+        ©Copyright 2021 zhangjz-toishT工作室 | 浙大城市学院小伙
+      </el-footer>
     </el-container>
   </el-container>
 </template>
@@ -152,5 +155,5 @@ span{
   cursor: pointer;
   color: #409EFF;
 }
-
+.footer{flex: 0;background: #2c3e50}
 </style>

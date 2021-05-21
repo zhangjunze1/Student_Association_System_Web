@@ -5,12 +5,19 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './assets/css/global.css'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+// eslint-disable-next-line no-unused-vars
+import $ from 'jquery'
 // eslint-disable-next-line no-unused-vars
 import axios from 'axios'
 // eslint-disable-next-line no-unused-vars
 import VueAMap from 'vue-amap'
+import BootstrapVue from 'bootstrap-vue'
+
 Vue.use(VueAMap)
 Vue.use(ElementUI)
+Vue.use(BootstrapVue)
 
 VueAMap.initAMapApiLoader({
   key: '241c26aea06ed390a44598314eefd604',

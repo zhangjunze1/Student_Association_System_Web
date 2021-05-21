@@ -62,6 +62,16 @@ const routes = [
         path: '/myAss/:assId/activity',
         name: 'AssItem',
         component: () => import('../views/Information/AssItem.vue')
+      },
+      {
+        path: '/activity/:activityId/content',
+        name: 'ActivityContent',
+        component: () => import('../views/Information/ActivityContent.vue')
+      },
+      {
+        path: '/activity/:activityId/endcontent',
+        name: 'ActivityEndContent',
+        component: () => import('../views/Information/ActivityEndContent.vue')
       }
     ]
   },

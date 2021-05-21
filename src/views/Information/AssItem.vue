@@ -6,16 +6,18 @@
     <el-card class="box-card" style="margin-top: 20px">
       <!--表格内容显示区域-->
 <!--      @row-dblclick='handleTaskItemClick'-->
+
       <el-table
         v-loading="loading"
         :data="activityList"
+        @row-dblclick='handleAssItemClick'
         border
         max-height="380px"
         style="width: 100%;">
         <el-table-column
           prop="activityId"
           label="活动编号"
-          width="100">
+          width="80">
         </el-table-column>
         <el-table-column
           prop="activitySub"
@@ -25,7 +27,10 @@
         <el-table-column
           prop="activityContent"
           label="内容"
-          width="150">
+          width="70">
+          <template slot-scope="scope">
+            <span  v-if="scope.row.activityContent != ''" style="color: black;">略</span>
+          </template>
         </el-table-column>
         <el-table-column
           prop="activityStartTime"
@@ -39,13 +44,13 @@
         </el-table-column>
         <el-table-column
           prop="activityState"
-          label="状态"
+          label="活动状态"
           width="100">
         </el-table-column>
         <el-table-column
           prop="activityScore"
           label="活动分值"
-          width="60">
+          width="100">
         </el-table-column>
         <el-table-column
           prop="activityLeaderName"
@@ -54,10 +59,11 @@
         </el-table-column>
         <el-table-column
           label="操作"
-          width="180">
+          width="300">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" icon="el-icon-edit" @click="showEditDialog(scope.row.userId)"></el-button>
-            <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeUserById(scope.row.userId)"></el-button>
+            <el-button type="primary" size="mini" icon="el-icon-search" @click="showConcentDialog(scope.row)">报名通知</el-button>
+            <el-button v-if="scope.row.activityState==='活动结束'" type="primary" size="mini" icon="el-icon-search" @click="showEndConcentDialog(scope.row)">活动结束</el-button>
+            <el-button v-if="ifInAss==='已通过'&&scope.row.activityState==='报名中'" type="warning" size="mini" icon="el-icon-edit" @click="applyFor(scope.row.userId)">申请</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -97,13 +103,23 @@ export default {
       total: 200,
       activityList: [],
       ass: [],
-      loading: true
+      loading: true,
+      // 是否在该社团中
+      ifInAss: this.$route.query.state
     }
   },
   created () {
+    // eslint-disable-next-line eqeqeq
+    console.log(this.$route.query.state)
     this.getAssActivity()
     console.log(this.$route.params.assId)
     console.log(this.$route.query.name)
+    if (this.ifInAss !== '已通过') {
+      this.$confirm('您尚未通过' + this.$route.query.name + '社长的审核，请耐心等待，通过之后才能申请加入活动！', '提示', {
+        confirmButtonText: '确定',
+        type: 'warning'
+      })
+    }
   },
   methods: {
     goBack () {
@@ -133,6 +149,18 @@ export default {
       console.log(`当前页: ${val}`)
       this.current = val
       this.getAssActivity()
+    },
+    showConcentDialog (e) {
+      console.log(e.activityId)
+      this.$router.push({ path: '/activity/' + e.activityId + '/content', query: { activity: e, assName: this.$route.query.name } })
+    },
+    showEndConcentDialog (e) {
+      console.log(e.activityId)
+      this.$router.push({ path: '/activity/' + e.activityId + '/endcontent', query: { activity: e, assName: this.$route.query.name } })
+    },
+    handleAssItemClick (e) {
+      console.log(e.activityId)
+      this.$router.push({ path: '/activity/' + e.activityId + '/content', query: { activity: e, assName: this.$route.query.name } })
     }
   }
 }

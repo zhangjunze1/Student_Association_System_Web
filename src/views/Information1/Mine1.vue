@@ -35,10 +35,10 @@
         <el-input v-model="form.phone" ></el-input>
       </el-form-item>
       <el-form-item label="分数" style="width: 270px">
-        <el-input v-model="form.score" disabled></el-input>
+
         <el-progress style="margin-top: 15px" type="circle"  :percentage="percent" ></el-progress>
         <el-tooltip content="满分为150分" placement="top">
-          <el-button>情况</el-button>
+          <el-button>{{form.score}}分</el-button>
         </el-tooltip>
       </el-form-item>
       <el-form-item label="个性签名" style="width: 800px">
