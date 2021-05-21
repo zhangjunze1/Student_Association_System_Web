@@ -20,3 +20,22 @@ export const findAssActivityPage = (current, size, assId) => {
     }
   })
 }
+
+/**
+ * 获取我的活动记录
+ * @param current
+ * @param size
+ * @param userId
+ * @returns {AxiosPromise}
+ */
+export const findMyActivityPage = (current, size, userId) => {
+  return request({
+    url: '/activity/findMyActivityPage',
+    method: 'get',
+    params: {
+      current,
+      size,
+      userId
+    }
+  })
+}

@@ -3,9 +3,9 @@
     <div>
       <!--面包屑-->
       <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 10px;padding-bottom: 10px;font-size: 12px">
-        <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/main1' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>我的中心</el-breadcrumb-item>
-        <el-breadcrumb-item>活动记录</el-breadcrumb-item>
+        <el-breadcrumb-item>我的社团</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
 
@@ -13,7 +13,7 @@
       <!--表格内容显示区域-->
       <el-table
         v-loading="loading"
-        :data="myActivityList"
+        :data="myAssList"
         @row-dblclick='handleTaskItemClick'
         border
         max-height="380px"
@@ -81,11 +81,69 @@
 </template>
 
 <script>
+
+import { findMyAssListPage } from '@/api/assData'
+
 export default {
-  name: 'PreActivity'
+  name: 'MyAss1',
+  data () {
+    return {
+      // 当前页
+      current: 1,
+      // 每页显示的条数
+      pageSize: 6,
+      // 总条数
+      total: 200,
+      // 所有社团集合
+      myAssList: [],
+      loading: true
+    }
+  },
+  created () {
+    this.getMyAssListPage()
+  },
+  methods: {
+    onSubmit () {
+      console.log('submit!')
+    },
+    // 当每一页条数改变的时候，
+    handleSizeChange (val) {
+      // eslint-disable-next-line no-template-curly-in-string
+      console.log(`每页 ${val} 条`)
+      // 将val赋值给size
+      this.pageSize = val
+      // 重新去后台查询数据
+      this.getMyAssListPage()
+    },
+    // 当页码改变的时候
+    handleCurrentChange (val) {
+      // eslint-disable-next-line no-template-curly-in-string
+      console.log(`当前页: ${val}`)
+      this.current = val
+      this.getMyAssListPage()
+    },
+    handleTaskItemClick (e) {
+      console.log(e.assName)
+      this.$router.push({ path: '/myAss/' + e.assId + '/activity', query: { name: e.assName, state: e.memberAssState, success: 0 } })
+    },
+    async getMyAssListPage () {
+      const { data } = await findMyAssListPage(this.current, this.pageSize, this.$root.USER.id)
+      console.log(data)
+      // eslint-disable-next-line eqeqeq
+
+      this.myAssList = data.data.myAssList
+      this.total = data.data.total
+
+      // eslint-disable-next-line eqeqeq
+
+      this.loading = false
+    }
+  }
 }
 </script>
 
 <style scoped>
-
+body {
+  margin: 0;
+}
 </style>

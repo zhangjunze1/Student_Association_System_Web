@@ -36,42 +36,42 @@ const routes = [
       {
         path: '/apply',
         name: 'Apply',
-        component: () => import('../views/Information/Apply.vue')
+        component: () => import('../views/Information/AssRelevant/Apply.vue')
       },
       {
         path: '/enroll',
         name: 'Enroll',
-        component: () => import('../views/Information/Enroll.vue')
+        component: () => import('../views/Information/AssRelevant/Enroll.vue')
       },
       {
         path: '/preActivity',
         name: 'PreActivity',
-        component: () => import('../views/Information/PreActivity.vue')
+        component: () => import('../views/Information/MyCenter/PreActivity.vue')
       },
       {
         path: '/myAss',
         name: 'MyAss',
-        component: () => import('../views/Information/MyAss.vue')
+        component: () => import('../views/Information/MyCenter/MyAss.vue')
       },
       {
         path: '/mine',
         name: 'Mine',
-        component: () => import('../views/Information/Mine.vue')
+        component: () => import('../views/Information/MyCenter/Mine.vue')
       },
       {
         path: '/myAss/:assId/activity',
         name: 'AssItem',
-        component: () => import('../views/Information/AssItem.vue')
+        component: () => import('../views/Information/MyCenter/AssItem.vue')
       },
       {
         path: '/activity/:activityId/content',
         name: 'ActivityContent',
-        component: () => import('../views/Information/ActivityContent.vue')
+        component: () => import('../views/Information/MyCenter/ActivityContent.vue')
       },
       {
         path: '/activity/:activityId/endcontent',
         name: 'ActivityEndContent',
-        component: () => import('../views/Information/ActivityEndContent.vue')
+        component: () => import('../views/Information/MyCenter/ActivityEndContent.vue')
       }
     ]
   },
@@ -86,34 +86,59 @@ const routes = [
         component: () => import('../views/Information1/Host1.vue')
       },
       {
-        path: '/apply1',
-        name: 'Apply1',
-        component: () => import('../views/Information1/Apply1.vue')
-      },
-      {
         path: '/enroll1',
         name: 'Enroll1',
-        component: () => import('../views/Information1/Enroll1.vue')
+        component: () => import('../views/Information1/AssRelevent/Enroll1.vue')
       },
       {
         path: '/preActivity1',
         name: 'PreActivity1',
-        component: () => import('../views/Information1/PreActivity1.vue')
+        component: () => import('../views/Information1/MyCenter/PreActivity1.vue')
       },
       {
         path: '/myAss1',
         name: 'MyAss1',
-        component: () => import('../views/Information1/MyAss1.vue')
+        component: () => import('../views/Information1/MyCenter/MyAss1.vue')
       },
       {
         path: '/mine1',
         name: 'Mine1',
-        component: () => import('../views/Information1/Mine1.vue')
+        component: () => import('../views/Information1/MyCenter/Mine1.vue')
       },
       {
         path: '/assControl',
         name: 'AssControl',
-        component: () => import('../views/Information1/AssControl.vue')
+        component: () => import('../views/Information1/LeaderCenter/AssControl.vue')
+      },
+      {
+        path: '/myAss/:assId/activity',
+        name: 'AssItem1',
+        component: () => import('../views/Information1/MyCenter/AssItem1.vue')
+      },
+      {
+        path: '/activity/:activityId/content',
+        name: 'ActivityContent1',
+        component: () => import('../views/Information1/MyCenter/ActivityContent1.vue')
+      },
+      {
+        path: '/activity/:activityId/endcontent',
+        name: 'ActivityEndContent1',
+        component: () => import('../views/Information1/MyCenter/ActivityEndContent1.vue')
+      },
+      {
+        path: '/applyActivity',
+        name: 'ApplyActivity',
+        component: () => import('../views/Information1/LeaderCenter/ApplyActivity.vue')
+      },
+      {
+        path: '/activityFile',
+        name: 'ActivityFile',
+        component: () => import('../views/Information1/LeaderCenter/ActivityFile.vue')
+      },
+      {
+        path: '/allActivity',
+        name: 'AllActivity',
+        component: () => import('../views/Information1/LeaderCenter/AllActivity.vue')
       }
     ]
   },

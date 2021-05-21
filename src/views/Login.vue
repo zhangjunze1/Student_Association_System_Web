@@ -54,7 +54,7 @@ export default {
         ],
         password: [
           { required: true, message: '请输入登录密码', trigger: 'blur' },
-          { min: 6, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' }
+          { min: 1, max: 16, message: '长度在 1 到 16 个字符', trigger: 'blur' }
         ],
         verifyCode: [
           { required: true, message: '请输入计算结果', trigger: 'blur' }

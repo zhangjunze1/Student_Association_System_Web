@@ -4,24 +4,17 @@
       <!--面包屑-->
       <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 10px;padding-bottom: 10px;font-size: 12px">
         <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>管理界面</el-breadcrumb-item>
-        <el-breadcrumb-item>社团管理</el-breadcrumb-item>
+        <el-breadcrumb-item>我的中心</el-breadcrumb-item>
+        <el-breadcrumb-item>我的社团</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
 
-    <!--车辆列表卡片-->
-    <el-card class="box-card">
-      <el-form :inline="true" :model="formInline" class="demo-form-inline">
-        <el-row type="flex" justify="start">
-          <el-form-item style="margin-left: 10px"  >
-            <el-button type="primary" @click="addAss">增加社团</el-button>
-          </el-form-item>
-        </el-row>
-      </el-form>
+    <el-card class="box-card" >
       <!--表格内容显示区域-->
       <el-table
         v-loading="loading"
-        :data="assList"
+        :data="myAssList"
+        @row-dblclick='handleTaskItemClick'
         border
         max-height="380px"
         style="width: 100%;">
@@ -46,22 +39,27 @@
           width="150">
         </el-table-column>
         <el-table-column
-          prop="assState"
-          label="社团状态"
+          prop="memberAssState"
+          label="申请状态"
           width="150">
-        </el-table-column>
-        <el-table-column
-          prop=""
-          label="">
-        </el-table-column>
-        <el-table-column
-          label="操作"
-          width="180">
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" icon="el-icon-edit" @click="showEditDialog(scope.row.userId)"></el-button>
-            <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeUserById(scope.row.userId)"></el-button>
+            <span  v-if="scope.row.memberAssState == '申请中'" style="color: red;">申请中</span>
+            <span  v-if="scope.row.memberAssState == '已通过'" style="color: blue;">已是社员</span>
           </template>
         </el-table-column>
+        <el-table-column
+          prop="userTrueName"
+          label="社长">
+        </el-table-column>
+
+<!--        <el-table-column-->
+<!--          label="操作"-->
+<!--          width="180">-->
+<!--          <template slot-scope="scope">-->
+<!--            <el-button type="primary" size="mini" icon="el-icon-edit" @click="showEditDialog(scope.row.userId)"></el-button>-->
+<!--            <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeUserById(scope.row.userId)"></el-button>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
       </el-table>
       <!--分页功能-->
       <div class="block">
@@ -78,22 +76,18 @@
         </el-pagination>
       </div>
     </el-card>
-  </div>
 
+  </div>
 </template>
 
 <script>
 
-import { findAssListPage } from '@/api/assData'
+import { findMyAssListPage } from '@/api/assData'
 
 export default {
-  name: 'Ass',
+  name: 'MyAss',
   data () {
     return {
-      formInline: {
-        // eslint-disable-next-line no-undef
-        assName: ''
-      },
       // 当前页
       current: 1,
       // 每页显示的条数
@@ -101,21 +95,14 @@ export default {
       // 总条数
       total: 200,
       // 所有社团集合
-      assList: [],
+      myAssList: [],
       loading: true
     }
   },
   created () {
-    this.getAssListPage()
+    this.getMyAssListPage()
   },
   methods: {
-    async getAssListPage () {
-      const { data } = await findAssListPage(this.current, this.pageSize)
-      console.log(data)
-      this.assList = data.data.Ass
-      this.total = data.data.total
-      this.loading = false
-    },
     onSubmit () {
       console.log('submit!')
     },
@@ -126,14 +113,35 @@ export default {
       // 将val赋值给size
       this.pageSize = val
       // 重新去后台查询数据
-      this.getAssListPage()
+      this.getMyAssListPage()
     },
     // 当页码改变的时候
     handleCurrentChange (val) {
       // eslint-disable-next-line no-template-curly-in-string
       console.log(`当前页: ${val}`)
       this.current = val
-      this.getAssListPage()
+      this.getMyAssListPage()
+    },
+    handleTaskItemClick (e) {
+      console.log(e.assName)
+      this.$router.push({ path: '/myAss/' + e.assId + '/activity', query: { name: e.assName, state: e.memberAssState, success: 0 } })
+    },
+    async getMyAssListPage () {
+      const { data } = await findMyAssListPage(this.current, this.pageSize, this.$root.USER.id)
+      console.log(data)
+      // eslint-disable-next-line eqeqeq
+      if (data.code == 3020) {
+        this.$message({
+          message: '您尚未参加任何社团噢~',
+          type: 'warning'
+        })
+      } else {
+        this.myAssList = data.data.myAssList
+        this.total = data.data.total
+      }
+      // eslint-disable-next-line eqeqeq
+
+      this.loading = false
     }
   }
 }

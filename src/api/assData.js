@@ -60,3 +60,26 @@ export const findMyAssListPage = (current, size, userId) => {
     }
   })
 }
+
+/**
+ * 申请新社团
+ * @param name
+ * @param position
+ * @param funds
+ * @param teacher
+ * @param userId
+ * @returns {AxiosPromise}
+ */
+export const applyNewAss = (name, position, funds, teacher, userId) => {
+  return request({
+    url: '/ass/applyNewAss',
+    method: 'POST',
+    params: {
+      name,
+      position,
+      funds,
+      teacher,
+      userId
+    }
+  })
+}

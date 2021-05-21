@@ -2,10 +2,10 @@
   <div>
     <el-page-header @back="goBack" :content="this.$route.query.name" >
     </el-page-header>
-    <!--车辆列表卡片-->
+
     <el-card class="box-card" style="margin-top: 20px">
       <!--表格内容显示区域-->
-<!--      @row-dblclick='handleTaskItemClick'-->
+      <!--      @row-dblclick='handleTaskItemClick'-->
 
       <el-table
         v-loading="loading"
@@ -55,15 +55,15 @@
         <el-table-column
           prop="activityLeaderName"
           label="申报社长"
-          >
+        >
         </el-table-column>
         <el-table-column
           label="操作"
           width="300">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" icon="el-icon-search" @click="showConcentDialog(scope.row)">报名通知</el-button>
-            <el-button v-if="scope.row.activityState==='活动结束'" type="primary" size="mini" icon="el-icon-search" @click="showEndConcentDialog(scope.row)">活动结束</el-button>
-            <el-button v-if="ifInAss==='已通过'&&scope.row.activityState==='报名中'" type="warning" size="mini" icon="el-icon-edit" @click="applyFor(scope.row.userId)">申请</el-button>
+            <el-button v-if="scope.row.activityState==='活动结束'&&scope.row.activityEndContent!=''" type="primary" size="mini" icon="el-icon-search" @click="showEndConcentDialog(scope.row)">活动结束</el-button>
+            <el-button v-if="ifInAss==='已通过'&&scope.row.activityState==='报名中'&&this.$route.query.success==0" type="warning" size="mini" icon="el-icon-edit" @click="applyFor(scope.row.userId)">申请</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -92,7 +92,7 @@
 import { findAssActivityPage } from '@/api/activity'
 
 export default {
-  name: 'AssItem',
+  name: 'AssItem1',
   data () {
     return {
       // 当前页

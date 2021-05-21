@@ -16,20 +16,34 @@
           <i class="el-icon-tickets"></i>
           <span>社团相关</span>
         </template>
-        <el-menu-item index="/apply1">
-          <i class="el-icon-magic-stick"></i>
-          <span slot="title">社团成立</span>
-        </el-menu-item>
         <el-menu-item index="/enroll1">
           <i class="el-icon-chat-dot-round"></i>
           <span slot="title">社团报名</span>
         </el-menu-item>
+      </el-submenu>
+
+      <el-submenu index="/LeaderManage">
+        <template slot="title">
+          <i class="el-icon-price-tag"></i>
+          <span>社长中心</span>
+        </template>
         <el-menu-item index="/assControl">
           <i class="el-icon-s-tools"></i>
           <span slot="title">管理社团</span>
         </el-menu-item>
+        <el-menu-item index="/applyActivity">
+          <i class="el-icon-reading"></i>
+          <span slot="title">申请活动</span>
+        </el-menu-item>
+        <el-menu-item index="/activityFile">
+          <i class="el-icon-data-analysis"></i>
+          <span slot="title">活动后期</span>
+        </el-menu-item>
+        <el-menu-item index="/allActivity">
+          <i class="el-icon-set-up"></i>
+          <span slot="title">社团活动</span>
+        </el-menu-item>
       </el-submenu>
-
       <el-submenu index="/MyCenter1" >
         <template slot="title">
           <i class="el-icon-camera-solid"></i>

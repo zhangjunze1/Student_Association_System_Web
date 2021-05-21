@@ -4,8 +4,8 @@
       <!--面包屑-->
       <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 10px;padding-bottom: 10px;font-size: 12px">
         <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>我的中心</el-breadcrumb-item>
-        <el-breadcrumb-item>我的社团</el-breadcrumb-item>
+        <el-breadcrumb-item>社团相关</el-breadcrumb-item>
+        <el-breadcrumb-item>社团报名</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
 
@@ -13,7 +13,7 @@
       <!--表格内容显示区域-->
       <el-table
         v-loading="loading"
-        :data="myAssList"
+        :data="AssList"
         @row-dblclick='handleTaskItemClick'
         border
         max-height="380px"
@@ -39,27 +39,26 @@
           width="150">
         </el-table-column>
         <el-table-column
-          prop="memberAssState"
-          label="申请状态"
+          prop="assLeader"
+          label="社长"
+          width="150">
+        </el-table-column>
+        <el-table-column
+          prop="assState"
+          label="社团状态"
           width="150">
           <template slot-scope="scope">
-            <span  v-if="scope.row.memberAssState == '申请中'" style="color: red;">申请中</span>
-            <span  v-if="scope.row.memberAssState == '已通过'" style="color: blue;">已是社员</span>
+            <span  v-if="scope.row.assState == '申请中'" style="color: red;">申请中</span>
+            <span  v-if="scope.row.assState == '已通过'" style="color: blue;">已通过</span>
           </template>
         </el-table-column>
         <el-table-column
-          prop="userTrueName"
-          label="社长">
+          label="操作"
+          >
+          <template slot-scope="scope">
+            <el-button type="primary" size="mini" icon="el-icon-circle-plus-outline" @click="addDialog(scope.row.assId)">报名</el-button>
+          </template>
         </el-table-column>
-
-<!--        <el-table-column-->
-<!--          label="操作"-->
-<!--          width="180">-->
-<!--          <template slot-scope="scope">-->
-<!--            <el-button type="primary" size="mini" icon="el-icon-edit" @click="showEditDialog(scope.row.userId)"></el-button>-->
-<!--            <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeUserById(scope.row.userId)"></el-button>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
       </el-table>
       <!--分页功能-->
       <div class="block">
@@ -82,10 +81,10 @@
 
 <script>
 
-import { findMyAssListPage } from '@/api/assData'
+import { findAssListPage } from '@/api/assData'
 
 export default {
-  name: 'MyAss',
+  name: 'Enroll',
   data () {
     return {
       // 当前页
@@ -95,12 +94,12 @@ export default {
       // 总条数
       total: 200,
       // 所有社团集合
-      myAssList: [],
+      AssList: [],
       loading: true
     }
   },
   created () {
-    this.getMyAssListPage()
+    this.getAssListPage()
   },
   methods: {
     onSubmit () {
@@ -113,34 +112,33 @@ export default {
       // 将val赋值给size
       this.pageSize = val
       // 重新去后台查询数据
-      this.getMyAssListPage()
+      this.getAssListPage()
     },
     // 当页码改变的时候
     handleCurrentChange (val) {
       // eslint-disable-next-line no-template-curly-in-string
       console.log(`当前页: ${val}`)
       this.current = val
-      this.getMyAssListPage()
+      this.getAssListPage()
     },
     handleTaskItemClick (e) {
       console.log(e.assName)
-      this.$router.push({ path: '/myAss/' + e.assId + '/activity', query: { name: e.assName, state: e.memberAssState } })
-    },
-    async getMyAssListPage () {
-      const { data } = await findMyAssListPage(this.current, this.pageSize, this.$root.USER.id)
-      console.log(data)
       // eslint-disable-next-line eqeqeq
-      if (data.code == 3020) {
-        this.$message({
-          message: '您尚未参加任何社团噢~',
-          type: 'warning'
+      if (e.assState == '申请中') {
+        this.$notify({
+          message: '该社团尚未申请成功',
+          type: 'warning',
+          duration: 1200
         })
       } else {
-        this.myAssList = data.data.myAssList
-        this.total = data.data.total
+        this.$router.push({ path: '/myAss/' + e.assId + '/activity', query: { name: e.assName, state: '已通过', success: 1 } })
       }
-      // eslint-disable-next-line eqeqeq
-
+    },
+    async getAssListPage () {
+      const { data } = await findAssListPage(this.current, this.pageSize)
+      console.log(data)
+      this.AssList = data.data.Ass
+      this.total = data.data.total
       this.loading = false
     }
   }
@@ -148,7 +146,5 @@ export default {
 </script>
 
 <style scoped>
-body {
-  margin: 0;
-}
+
 </style>
