@@ -91,3 +91,23 @@ export const editUserMessage = (userId, pwd, name, gender, phone, signature) => 
     }
   })
 }
+
+/**
+ * 获取该社团的所有成员
+ * @param assId
+ * @returns {AxiosPromise}
+ */
+export const findAssMember = (current, size, assId, trueName, number, memberAssState) => {
+  return request({
+    url: '/user/findAssMember',
+    method: 'GET',
+    params: {
+      current,
+      size,
+      assId,
+      trueName,
+      number,
+      memberAssState
+    }
+  })
+}

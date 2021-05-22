@@ -47,6 +47,17 @@ new Vue({
         phone: null,
         pic: null,
         pwd: null
+      }],
+      ASS: [{
+        assId: null,
+        assName: null,
+        assPosition: null,
+        assTeacher: null,
+        assCapital: null,
+        assNotice: null
+      }],
+      ApplyLeader: [{
+        applyNum: null
       }]
     }
   },

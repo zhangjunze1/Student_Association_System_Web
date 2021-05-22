@@ -83,3 +83,18 @@ export const applyNewAss = (name, position, funds, teacher, userId) => {
     }
   })
 }
+
+/**
+ * 获取社长的社团信息
+ * @param userId
+ * @returns {AxiosPromise}
+ */
+export const findLeaderAss = (userId) => {
+  return request({
+    url: '/ass/findLeaderAss',
+    method: 'get',
+    params: {
+      userId
+    }
+  })
+}

@@ -33,7 +33,7 @@
         </el-menu-item>
         <el-menu-item index="/applyActivity">
           <i class="el-icon-reading"></i>
-          <span slot="title">申请活动</span>
+          <span slot="title">活动管理</span>
         </el-menu-item>
         <el-menu-item index="/activityFile">
           <i class="el-icon-data-analysis"></i>

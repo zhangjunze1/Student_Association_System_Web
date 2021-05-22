@@ -28,6 +28,10 @@
       <el-header >
         <span style="margin-right: 20px; font-size: 18px;color: black;size: 20px">{{this.$root.USER.trueName }}{{this.$root.USER.position }},欢迎你的归来！</span>
 
+        <el-badge :value="this.$root.ApplyLeader.applyNum" class="item">
+          <el-button size="small" @click="changeVue">用户申请</el-button>
+        </el-badge>
+
         <div class="right_box">
           <el-dropdown>
             <img src="../assets/img/timg.jpg">
@@ -54,14 +58,23 @@
 // eslint-disable-next-line no-unused-vars
 
 import MenuTree1 from '@/components/MenuTree1'
+import { findAssMember } from '@/api/user'
 
 export default {
   name: 'Main1',
   components: { MenuTree1 },
   data () {
     return {
-      isCollapse: false
+      isCollapse: false,
+      userTrueName: '',
+      userNumber: '',
+      memberAssState: '申请中',
+      current: 1,
+      pageSize: 10
     }
+  },
+  created () {
+    this.getAssMember()
   },
   methods: {
     toggleCollapse () {
@@ -73,6 +86,15 @@ export default {
     },
     change () {
       this.$router.push('/host')
+    },
+    async getAssMember () {
+      const { data } = await findAssMember(this.current, this.pageSize, this.$root.ASS.assId, this.userTrueName, this.userNumber, this.memberAssState)
+      this.$root.ApplyLeader.applyNum = data.data.total
+      console.log(this.$root.ApplyLeader.applyNum)
+      console.log(data)
+    },
+    changeVue () {
+      this.$router.push({ path: '/assControl', query: { state: '申请中' } })
     }
   }
 }
@@ -156,6 +178,10 @@ span{
 .el-dropdown-link {
   cursor: pointer;
   color: #409EFF;
+}
+.item {
+  margin-top: 0px;
+  margin-right: -800px;
 }
 .footer{flex: 0;background: #2c3e50}
 </style>

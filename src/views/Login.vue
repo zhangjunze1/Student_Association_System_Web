@@ -37,6 +37,7 @@
 <script>
 
 import { userLogin } from '@/api/user'
+import { findLeaderAss } from '@/api/assData'
 
 export default {
   name: 'Login',
@@ -84,6 +85,17 @@ export default {
     resetForm (formName) {
       this.$refs[formName].resetFields()
     },
+    async getLeaderAss () {
+      const { data } = await findLeaderAss(this.$root.USER.id)
+      this.$root.ASS.assId = data.data.ass.assId
+      this.$root.ASS.assName = data.data.ass.assName
+      this.$root.ASS.assPosition = data.data.ass.assPositon
+      this.$root.ASS.assTeacher = data.data.ass.assTeacher
+      this.$root.ASS.assCapital = data.data.ass.assCapital
+      this.$root.ASS.assNotice = data.data.ass.assNotice
+      console.log(data)
+      console.log(this.$root.ASS.assId)
+    },
     async getuserLogin () {
       const { data } = await userLogin(this.loginForm.number, this.loginForm.password)
       console.log(data)
@@ -119,6 +131,7 @@ export default {
         console.log(this.$root.USER.id)
         console.log(this.$root.USER.name)
         console.log(this.$root.USER.signature)
+        // eslint-disable-next-line eqeqeq
         this.$notify({
           title: '成功',
           message: '登录成功',
@@ -130,6 +143,8 @@ export default {
               this.$router.push('/main')
               // eslint-disable-next-line eqeqeq
             } else if (this.$root.USER.authority == 1) {
+              // 获取社长的社团信息
+              this.getLeaderAss()
               this.$router.push('/main1')
             } else {
               this.$router.push('/main2')
