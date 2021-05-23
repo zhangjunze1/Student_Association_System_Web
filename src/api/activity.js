@@ -39,3 +39,49 @@ export const findMyActivityPage = (current, size, userId) => {
     }
   })
 }
+
+/**
+ * 发送图片
+ * @param file
+ * @returns {AxiosPromise}
+ */
+export const addActivityPic = (data) => {
+  return request({
+    url: '/oss/activityPre/uploadFile',
+    method: 'POST',
+    data: data
+  })
+}
+
+/**
+ * 新建活动
+ * @param activitySub
+ * @param activityContent
+ * @param activityScore
+ * @param activityFinishTime1
+ * @param activityFinishTime2
+ * @param activityStartTime1
+ * @param activityStartTime2
+ * @param imageUrl
+ * @returns {AxiosPromise}
+ */
+export const addNewActivity = (activitySub, activityContent, activityScore, activityFinishTime1, activityFinishTime2, activityStartTime1, activityStartTime2, imageUrl
+  , userId, assId, userTrueName) => {
+  return request({
+    url: '/activity/addNewActivity',
+    method: 'POST',
+    params: {
+      activitySub,
+      activityContent,
+      activityScore,
+      activityFinishTime1,
+      activityFinishTime2,
+      activityStartTime1,
+      activityStartTime2,
+      imageUrl,
+      userId,
+      assId,
+      userTrueName
+    }
+  })
+}

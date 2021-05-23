@@ -116,12 +116,12 @@ const routes = [
         component: () => import('../views/Information1/MyCenter/AssItem1.vue')
       },
       {
-        path: '/activity/:activityId/content',
+        path: '/activity/:activityId/content1',
         name: 'ActivityContent1',
         component: () => import('../views/Information1/MyCenter/ActivityContent1.vue')
       },
       {
-        path: '/activity/:activityId/endcontent',
+        path: '/activity/:activityId/endcontent1',
         name: 'ActivityEndContent1',
         component: () => import('../views/Information1/MyCenter/ActivityEndContent1.vue')
       },
@@ -129,16 +129,6 @@ const routes = [
         path: '/applyActivity',
         name: 'ApplyActivity',
         component: () => import('../views/Information1/LeaderCenter/ApplyActivity.vue')
-      },
-      {
-        path: '/activityFile',
-        name: 'ActivityFile',
-        component: () => import('../views/Information1/LeaderCenter/ActivityFile.vue')
-      },
-      {
-        path: '/allActivity',
-        name: 'AllActivity',
-        component: () => import('../views/Information1/LeaderCenter/AllActivity.vue')
       }
     ]
   },
@@ -155,12 +145,12 @@ const routes = [
       {
         path: '/ass',
         name: 'Ass',
-        component: () => import('../views/AdminInformation2/Ass.vue')
+        component: () => import('../views/AdminInformation2/Control/Ass.vue')
       },
       {
         path: '/member',
         name: 'Member',
-        component: () => import('../views/AdminInformation2/Member.vue')
+        component: () => import('../views/AdminInformation2/Control/Member.vue')
       },
       {
         path: '/activity',
@@ -170,7 +160,7 @@ const routes = [
       {
         path: '/notice',
         name: 'Notice',
-        component: () => import('../views/AdminInformation2/Notice.vue')
+        component: () => import('../views/AdminInformation2/Control/Notice.vue')
       },
       {
         path: '/controlAss',
@@ -186,6 +176,21 @@ const routes = [
         path: '/mine2',
         name: 'Mine2',
         component: () => import('../views/AdminInformation2/Mine2.vue')
+      },
+      {
+        path: '/Ass/:assId/activity',
+        name: 'AssItem2',
+        component: () => import('../views/AdminInformation2/Control/AssItem2.vue')
+      },
+      {
+        path: '/activity2/:activityId/content2',
+        name: 'ActivityContent2',
+        component: () => import('../views/AdminInformation2/Control/ActivityContent2.vue')
+      },
+      {
+        path: '/activity2/:activityId/endcontent2',
+        name: 'ActivityEndContent2',
+        component: () => import('../views/AdminInformation2/Control/ActivityEndContent2.vue')
       }
     ]
   }

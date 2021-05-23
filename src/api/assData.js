@@ -98,3 +98,24 @@ export const findLeaderAss = (userId) => {
     }
   })
 }
+
+/**
+ * 获取社团列表模糊查询分页
+ * @param current
+ * @param size
+ * @param assName
+ * @param assState
+ * @returns {AxiosPromise}
+ */
+export const findAssListQueryPage = (current, size, assName, assState) => {
+  return request({
+    url: '/ass/findAssListQueryPage',
+    method: 'get',
+    params: {
+      current,
+      size,
+      assName,
+      assState
+    }
+  })
+}

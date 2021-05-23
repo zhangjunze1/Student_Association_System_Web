@@ -75,6 +75,9 @@ export default {
   },
   created () {
     this.getAssMember()
+    this.getAssMember()
+    this.getAssMember()
+    this.getAssMember()
   },
   methods: {
     toggleCollapse () {
@@ -94,6 +97,7 @@ export default {
       console.log(data)
     },
     changeVue () {
+      this.getAssMember()
       this.$router.push({ path: '/assControl', query: { state: '申请中' } })
     }
   }

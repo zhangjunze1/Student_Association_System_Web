@@ -165,6 +165,7 @@ export default {
       this.formInline.memberAssState = '申请中'
     }
     this.getAssMember()
+    this.getApply()
   },
   methods: {
     async getAssMember () {
@@ -173,6 +174,10 @@ export default {
       this.total = data.data.total
       console.log(data)
       this.loading = false
+    },
+    async getApply () {
+      const { data } = await findAssMember(this.current, this.pageSize, this.$root.ASS.assId, '', '', '申请中')
+      this.$root.ApplyLeader.applyNum = data.data.total
     },
     onSubmit () {
       console.log('submit!')
@@ -185,6 +190,7 @@ export default {
       this.pageSize = val
       // 重新去后台查询数据
       this.getAssMember()
+      this.getApply()
     },
     // 当页码改变的时候
     handleCurrentChange (val) {
@@ -192,6 +198,7 @@ export default {
       console.log(`当前页: ${val}`)
       this.current = val
       this.getAssMember()
+      this.getApply()
     },
     resetForm () {
       this.formInline.userNumber = ''
@@ -199,6 +206,7 @@ export default {
       this.formInline.position = ''
       this.formInline.memberAssState = ''
       this.getAssMember()
+      this.getApply()
     },
     showSignatureClick (e) {
       this.$alert(e.userSignature, e.userTrueName + '个性签名', {

@@ -45,7 +45,7 @@
 <script>
 
 export default {
-  name: 'ActivityEndContent1',
+  name: 'ActivityEndContent2',
   data () {
     return {
 

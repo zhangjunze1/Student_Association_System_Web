@@ -1,41 +1,11 @@
 <template>
   <div>
-    <div>
-      <!--面包屑-->
-      <el-breadcrumb separator-class="el-icon-arrow-right" style="padding-left: 10px;padding-bottom: 10px;font-size: 12px">
-        <el-breadcrumb-item :to="{ path: '/main2' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>审批中心</el-breadcrumb-item>
-        <el-breadcrumb-item>活动审批</el-breadcrumb-item>
-      </el-breadcrumb>
-    </div>
+    <el-page-header @back="goBack" :content="this.$route.query.name" >
+    </el-page-header>
+
     <el-card class="box-card" style="margin-top: 20px">
       <!--表格内容显示区域-->
       <!--      @row-dblclick='handleTaskItemClick'-->
-      <el-form :inline="true" :model="formInline" class="demo-form-inline">
-        <el-row type="flex" justify="start">
-          <el-form-item label="社团" style="margin-left: 10px">
-            <el-select v-model="formInline.assName" clearable placeholder="请选择社团">
-              <el-option
-                v-for="item in assList"
-                :key="item.assId"
-                :label="item.assName"
-                :value="item.assName">
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="活动状态" style="margin-left: 10px">
-            <el-select v-model="formInline.activityState" placeholder="活动状态">
-              <el-option label="审核中" value="审核中" style="color: red"></el-option>
-              <el-option label="报名中" value="报名中" style="color: blue"></el-option>
-              <el-option label="活动结束" value="活动结束" style="color: green"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item style="margin-left: 10px"  >
-            <el-button icon="el-icon-refresh" @click="resetForm">重置</el-button>
-            <el-button type="primary" icon="el-icon-search" @click="getAssAllList">查询</el-button>
-          </el-form-item>
-        </el-row>
-      </el-form>
 
       <el-table
         v-loading="loading"
@@ -113,11 +83,15 @@
     </el-card>
 
   </div>
+
 </template>
 
 <script>
+
+import { findAssActivityPage } from '@/api/activity'
+
 export default {
-  name: 'ControlAct',
+  name: 'AssItem2',
   data () {
     return {
       // 当前页
@@ -127,24 +101,66 @@ export default {
       // 总条数
       total: 200,
       activityList: [],
-      loading: false,
-      formInline: {
-        // eslint-disable-next-line no-undef
-        assName,
-        // eslint-disable-next-line no-undef
-        activityState
-      },
-      assList: []
+      ass: [],
+      loading: true,
+      // 是否在该社团中
+      ifInAss: this.$route.query.state
     }
   },
   created () {
+    // eslint-disable-next-line eqeqeq
+    console.log(this.$route.query.state)
+    this.getAssActivity()
+    console.log(this.$route.params.assId)
+    console.log(this.$route.query.name)
   },
   methods: {
-
+    goBack () {
+      this.$router.back()
+    },
+    async getAssActivity () {
+      const { data } = await findAssActivityPage(this.current, this.pageSize, this.$route.params.assId)
+      this.activityList = data.data.activities
+      console.log(data)
+      this.total = data.data.total
+      this.loading = false
+    },
+    onSubmit () {
+      console.log('submit!')
+    },
+    // 当每一页条数改变的时候，
+    handleSizeChange (val) {
+      // eslint-disable-next-line no-template-curly-in-string
+      console.log(`每页 ${val} 条`)
+      // 将val赋值给size
+      this.pageSize = val
+      this.getAssActivity()
+    },
+    // 当页码改变的时候
+    handleCurrentChange (val) {
+      // eslint-disable-next-line no-template-curly-in-string
+      console.log(`当前页: ${val}`)
+      this.current = val
+      this.getAssActivity()
+    },
+    showConcentDialog (e) {
+      console.log(e.activityId)
+      this.$router.push({ path: '/activity2/' + e.activityId + '/content2', query: { activity: e, assName: this.$route.query.name } })
+    },
+    showEndConcentDialog (e) {
+      console.log(e.activityId)
+      this.$router.push({ path: '/activity2/' + e.activityId + '/endcontent2', query: { activity: e, assName: this.$route.query.name } })
+    },
+    handleAssItemClick (e) {
+      console.log(e.activityId)
+      this.$router.push({ path: '/activity2/' + e.activityId + '/content2', query: { activity: e, assName: this.$route.query.name } })
+    }
   }
 }
 </script>
 
 <style scoped>
-
+body {
+  margin: 0;
+}
 </style>

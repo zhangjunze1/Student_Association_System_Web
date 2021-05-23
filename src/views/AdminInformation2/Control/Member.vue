@@ -9,7 +9,6 @@
       </el-breadcrumb>
     </div>
 
-  <!--车辆列表卡片-->
   <el-card class="box-card">
     <el-form :inline="true" :model="formInline" class="demo-form-inline">
       <el-row type="flex" justify="start">
@@ -51,6 +50,7 @@
     <el-table
       v-loading="loading"
       :data="MemberList"
+      @row-dblclick='showSignatureClick'
       border
       max-height="380px"
       style="width: 100%;">
@@ -203,6 +203,17 @@ export default {
       this.formInline.assName = ''
       this.formInline.position = ''
       this.myqueryUserList()
+    },
+    showSignatureClick (e) {
+      this.$alert(e.userSignature, e.userTrueName + '个性签名', {
+        confirmButtonText: '关闭',
+        callback: action => {
+          this.$message({
+            type: 'info',
+            message: `close: ${action}`
+          })
+        }
+      })
     }
   }
 

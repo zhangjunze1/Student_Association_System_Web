@@ -58,6 +58,9 @@ new Vue({
       }],
       ApplyLeader: [{
         applyNum: null
+      }],
+      ASSAPPLY: [{
+        applyNum: null
       }]
     }
   },

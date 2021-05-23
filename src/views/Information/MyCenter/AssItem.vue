@@ -62,8 +62,8 @@
           width="300">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" icon="el-icon-search" @click="showConcentDialog(scope.row)">报名通知</el-button>
-            <el-button v-if="scope.row.activityState==='活动结束'&&scope.row.activityEndContent!=''" type="primary" size="mini" icon="el-icon-search" @click="showEndConcentDialog(scope.row)">活动结束</el-button>
-            <el-button v-if="ifInAss==='已通过'&&scope.row.activityState==='报名中'&&this.$route.query.success==0" type="warning" size="mini" icon="el-icon-edit" @click="applyFor(scope.row.userId)">申请</el-button>
+            <el-button v-if="scope.row.activityState==='活动结束'&&scope.row.activityEndContent!=null" type="primary" size="mini" icon="el-icon-search" @click="showEndConcentDialog(scope.row)">活动结束</el-button>
+            <el-button v-if="ifInAss=='已通过'&&scope.row.activityState=='报名中'" type="warning" size="mini" icon="el-icon-edit" @click="applyFor(scope.row.userId)">申请</el-button>
           </template>
         </el-table-column>
       </el-table>

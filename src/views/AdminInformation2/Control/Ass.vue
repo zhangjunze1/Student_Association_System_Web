@@ -22,6 +22,7 @@
       <el-table
         v-loading="loading"
         :data="assList"
+        @row-dblclick='handleTaskItemClick'
         border
         max-height="380px"
         style="width: 100%;">
@@ -49,6 +50,10 @@
           prop="assState"
           label="社团状态"
           width="150">
+          <template slot-scope="scope">
+            <span  v-if="scope.row.assState == '申请中'" style="color: red;">申请中</span>
+            <span  v-if="scope.row.assState == '已通过'" style="color: blue;">已通过</span>
+          </template>
         </el-table-column>
         <el-table-column
           prop=""
@@ -134,6 +139,20 @@ export default {
       console.log(`当前页: ${val}`)
       this.current = val
       this.getAssListPage()
+    },
+    handleTaskItemClick (e) {
+      console.log(e)
+      // eslint-disable-next-line eqeqeq
+      if (e.assState == '申请中') {
+        this.$notify({
+          title: '警告',
+          message: '尚未申请通过,暂无活动',
+          type: 'warning',
+          duration: 2000
+        })
+      } else {
+        this.$router.push({ path: '/Ass/' + e.assId + '/activity', query: { name: e.assName, state: e.assState } })
+      }
     }
   }
 }

@@ -124,7 +124,7 @@ export default {
     },
     handleTaskItemClick (e) {
       console.log(e.assName)
-      this.$router.push({ path: '/myAss/' + e.assId + '/activity', query: { name: e.assName, state: e.memberAssState, success: 0 } })
+      this.$router.push({ path: '/myAss/' + e.assId + '/activity', query: { name: e.assName, state: e.memberAssState } })
     },
     async getMyAssListPage () {
       const { data } = await findMyAssListPage(this.current, this.pageSize, this.$root.USER.id)

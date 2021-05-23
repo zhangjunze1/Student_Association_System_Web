@@ -28,6 +28,10 @@
       <el-header >
         <span style="margin-right: 20px; font-size: 18px;color: black;size: 20px">{{this.$root.USER.trueName }}{{this.$root.USER.position }},欢迎你的归来！</span>
 
+        <el-badge :value="this.$root.ASSAPPLY.applyNum" class="item">
+          <el-button size="small" @click="changeVue">社团申请</el-button>
+        </el-badge>
+
         <div class="right_box">
           <el-dropdown>
             <img src="../assets/img/timg.jpg">
@@ -53,6 +57,7 @@
 <script>
 // eslint-disable-next-line no-unused-vars
 import MenuTree2 from '@/components/MenuTree2'
+import { findAssListQueryPage } from '@/api/assData'
 export default {
   name: 'Main2',
   components: { MenuTree2 },
@@ -60,6 +65,9 @@ export default {
     return {
       isCollapse: false
     }
+  },
+  created () {
+    this.getAssAllList()
   },
   methods: {
     toggleCollapse () {
@@ -71,6 +79,15 @@ export default {
     },
     change () {
       this.$router.push('/host')
+    },
+    async getAssAllList () {
+      const { data } = await findAssListQueryPage(this.current, this.pageSize, '', '申请中')
+      this.$root.ASSAPPLY.applyNum = data.data.total
+      this.loading = false
+    },
+    changeVue () {
+      this.getAssAllList()
+      this.$router.push({ path: '/controlAss', query: { state: '申请中' } })
     }
   }
 }
@@ -154,6 +171,10 @@ span{
 .el-dropdown-link {
   cursor: pointer;
   color: #409EFF;
+}
+.item {
+  margin-top: 0px;
+  margin-right: -800px;
 }
 .footer{flex: 0;background: #2c3e50}
 </style>

@@ -2,7 +2,7 @@
   <div>
     <el-page-header @back="goBack" :content="this.$route.query.activity.activitySub" >
     </el-page-header>
-    <b-card border-variant="light" header="活动内容-后期通知" align="left" style="margin-top: 50px">
+    <b-card border-variant="light" header="活动内容-报名通知" align="left" style="margin-top: 50px">
       <!-- fluid属性可以使container宽度最大化 -->
       <b-container >
         <b-row>
@@ -15,12 +15,12 @@
                 <b-badge variant="info">{{'原创'}}</b-badge>
                 &nbsp;&nbsp;发起人：{{this.$route.query.activity.activityLeaderName}}&nbsp;&nbsp;社团：{{this.$route.query.assName}}
               </b-card-text>
-              <b-card-text>{{this.$route.query.activity.activityEndContent}}</b-card-text>
-              <div v-if="this.$route.query.activity.activityEndUrl != ''" class="demo-image">
+              <b-card-text>{{this.$route.query.activity.activityContent}}</b-card-text>
+              <div v-if="this.$route.query.activity.activityUrl != ''" class="demo-image">
                 <div class="block" :key="cover">
                   <el-image
                     style="width: 200px; height: 200px"
-                    :src="this.$route.query.activity.activityEndUrl"
+                    :src="this.$route.query.activity.activityUrl"
                     :fit="cover"></el-image>
                 </div>
               </div>
@@ -45,7 +45,7 @@
 <script>
 
 export default {
-  name: 'ActivityEndContent1',
+  name: 'ActivityContent2',
   data () {
     return {
 

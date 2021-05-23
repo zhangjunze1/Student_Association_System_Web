@@ -35,14 +35,6 @@
           <i class="el-icon-reading"></i>
           <span slot="title">活动管理</span>
         </el-menu-item>
-        <el-menu-item index="/activityFile">
-          <i class="el-icon-data-analysis"></i>
-          <span slot="title">活动后期</span>
-        </el-menu-item>
-        <el-menu-item index="/allActivity">
-          <i class="el-icon-set-up"></i>
-          <span slot="title">社团活动</span>
-        </el-menu-item>
       </el-submenu>
       <el-submenu index="/MyCenter1" >
         <template slot="title">
