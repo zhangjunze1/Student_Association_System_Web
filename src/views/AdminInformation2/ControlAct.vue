@@ -9,8 +9,6 @@
       </el-breadcrumb>
     </div>
     <el-card class="box-card" style="margin-top: 20px">
-      <!--表格内容显示区域-->
-      <!--      @row-dblclick='handleTaskItemClick'-->
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-row type="flex" justify="start">
           <el-form-item label="社团" style="margin-left: 10px">
@@ -32,7 +30,7 @@
           </el-form-item>
           <el-form-item style="margin-left: 10px"  >
             <el-button icon="el-icon-refresh" @click="resetForm">重置</el-button>
-            <el-button type="primary" icon="el-icon-search" @click="getAssAllList">查询</el-button>
+            <el-button type="primary" icon="el-icon-search" @click="getApplyActivity">查询</el-button>
           </el-form-item>
         </el-row>
       </el-form>
@@ -76,11 +74,16 @@
           prop="activityState"
           label="活动状态"
           width="100">
+          <template slot-scope="scope">
+            <span  v-if="scope.row.activityState == '审核中'" style="color: red;">审核中</span>
+            <span  v-if="scope.row.activityState == '报名中'" style="color: blue;">报名中</span>
+            <span  v-if="scope.row.activityState == '活动结束'" style="color: green;">活动结束</span>
+          </template>
         </el-table-column>
         <el-table-column
           prop="activityScore"
           label="活动分值"
-          width="100">
+          width="80">
         </el-table-column>
         <el-table-column
           prop="activityLeaderName"
@@ -93,6 +96,7 @@
           <template slot-scope="scope">
             <el-button type="primary" size="mini" icon="el-icon-search" @click="showConcentDialog(scope.row)">报名通知</el-button>
             <el-button v-if="scope.row.activityState==='活动结束'&&scope.row.activityEndContent!=''" type="primary" size="mini" icon="el-icon-search" @click="showEndConcentDialog(scope.row)">活动结束</el-button>
+            <el-button v-if="scope.row.activityState==='审核中'" type="warning" size="mini" icon="el-icon-circle-check" @click="showEndConcentDialog(scope.row)">通过</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -116,6 +120,10 @@
 </template>
 
 <script>
+
+import { findApplyActivity } from '@/api/activity'
+import { findAssList } from '@/api/assData'
+
 export default {
   name: 'ControlAct',
   data () {
@@ -130,17 +138,50 @@ export default {
       loading: false,
       formInline: {
         // eslint-disable-next-line no-undef
-        assName,
+        assName: '',
         // eslint-disable-next-line no-undef
-        activityState
+        activityState: ''
       },
       assList: []
     }
   },
   created () {
+    if (this.$route.query.assName != null) {
+      this.formInline.assName = this.$route.query.assName
+      this.formInline.activityState = this.$route.query.activityState
+    }
+    this.getAssList()
+    this.getApplyActivity()
   },
   methods: {
-
+    async getApplyActivity () {
+      const { data } = await findApplyActivity(this.current, this.pageSize, this.formInline.assName, this.formInline.activityState)
+      this.activityList = data.data.activities
+      this.total = data.data.total
+      console.log(data)
+    },
+    resetForm () {
+      this.formInline.assName = ''
+      this.formInline.activityState = ''
+      this.getApplyActivity()
+    },
+    async getAssList () {
+      const { data } = await findAssList()
+      console.log(data)
+      this.assList = data.data.Ass
+    },
+    showConcentDialog (e) {
+      console.log(e.activityId)
+      this.$router.push({ path: '/activity2/' + e.activityId + '/content2', query: { activity: e, assName: this.$route.query.name } })
+    },
+    showEndConcentDialog (e) {
+      console.log(e.activityId)
+      this.$router.push({ path: '/activity2/' + e.activityId + '/endcontent2', query: { activity: e, assName: this.$route.query.name } })
+    },
+    handleAssItemClick (e) {
+      console.log(e.activityId)
+      this.$router.push({ path: '/activity2/' + e.activityId + '/content2', query: { activity: e, assName: this.$route.query.name } })
+    }
   }
 }
 </script>

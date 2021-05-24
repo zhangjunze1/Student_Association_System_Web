@@ -153,11 +153,6 @@ const routes = [
         component: () => import('../views/AdminInformation2/Control/Member.vue')
       },
       {
-        path: '/activity',
-        name: 'Activity',
-        component: () => import('../views/AdminInformation2/Activity.vue')
-      },
-      {
         path: '/notice',
         name: 'Notice',
         component: () => import('../views/AdminInformation2/Control/Notice.vue')

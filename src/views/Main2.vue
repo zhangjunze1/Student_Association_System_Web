@@ -31,6 +31,16 @@
         <el-badge :value="this.$root.ASSAPPLY.applyNum" class="item">
           <el-button size="small" @click="changeVue">社团申请</el-button>
         </el-badge>
+        <el-dropdown @command="handleCommand" class="item1">
+                <span class="el-dropdown-link">
+                    活动申请菜单<i class="el-icon-arrow-down el-icon--right"></i>
+                </span>
+          <el-dropdown-menu slot="dropdown" >
+            <el-dropdown-item v-for="item in kuList" :key="item.numberOfApply" :command="item.assName" >{{item.assName}}
+              <el-badge class="mark" :value="item.numberOfApply" />
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
 
         <div class="right_box">
           <el-dropdown>
@@ -58,16 +68,19 @@
 // eslint-disable-next-line no-unused-vars
 import MenuTree2 from '@/components/MenuTree2'
 import { findAssListQueryPage } from '@/api/assData'
+import { findActivityAndApplyCount } from '@/api/activity'
 export default {
   name: 'Main2',
   components: { MenuTree2 },
   data () {
     return {
-      isCollapse: false
+      isCollapse: false,
+      kuList: []
     }
   },
   created () {
     this.getAssAllList()
+    this.getActivityAndApplyCount()
   },
   methods: {
     toggleCollapse () {
@@ -88,6 +101,15 @@ export default {
     changeVue () {
       this.getAssAllList()
       this.$router.push({ path: '/controlAss', query: { state: '申请中' } })
+    },
+    async getActivityAndApplyCount () {
+      const { data } = await findActivityAndApplyCount()
+      this.kuList = data.data.applyActivities
+      console.log(1111)
+      console.log(data)
+    },
+    handleCommand (command) {
+      this.$router.push({ path: '/controlAct', query: { assName: command, activityState: '审核中' } })
     }
   }
 }
@@ -174,7 +196,11 @@ span{
 }
 .item {
   margin-top: 0px;
-  margin-right: -800px;
+  margin-right: -1000px;
+}
+.item1 {
+  margin-top: 0px;
+  margin-right: -600px;
 }
 .footer{flex: 0;background: #2c3e50}
 </style>

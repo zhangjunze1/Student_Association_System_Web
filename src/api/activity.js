@@ -85,3 +85,35 @@ export const addNewActivity = (activitySub, activityContent, activityScore, acti
     }
   })
 }
+
+/**
+ * 管理员中 获取申请的活动
+ * @param current
+ * @param size
+ * @param assName
+ * @param activityState
+ * @returns {AxiosPromise}
+ */
+export const findApplyActivity = (current, size, assName, activityState) => {
+  return request({
+    url: '/activity/findApplyActivity',
+    method: 'get',
+    params: {
+      current,
+      size,
+      assName,
+      activityState
+    }
+  })
+}
+
+/**
+ * 获取正在审核中的活动及其数量
+ * @returns {AxiosPromise}
+ */
+export const findActivityAndApplyCount = () => {
+  return request({
+    url: '/ass/findActivityAndApplyCount',
+    method: 'get'
+  })
+}
