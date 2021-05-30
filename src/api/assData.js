@@ -119,3 +119,93 @@ export const findAssListQueryPage = (current, size, assName, assState) => {
     }
   })
 }
+
+/**
+ * 管理员申请新社团
+ * @param name
+ * @param position
+ * @param funds
+ * @param teacher
+ * @param userNum
+ * @returns {AxiosPromise}
+ */
+export const applyNewAssByAdmin = (name, position, funds, teacher, userNum) => {
+  return request({
+    url: '/ass/applyNewAssByAdmin',
+    method: 'POST',
+    params: {
+      name,
+      position,
+      funds,
+      teacher,
+      userNum
+    }
+  })
+}
+
+/**
+ * 社团申请通过
+ * @param assId
+ * @param LeaderName
+ * @returns {AxiosPromise}
+ */
+export const agreeAssApply = (assId, LeaderName) => {
+  return request({
+    url: '/ass/agreeAssApply',
+    method: 'POST',
+    params: {
+      assId,
+      LeaderName
+    }
+  })
+}
+
+/**
+ * 社团申请不通过
+ * @param assId
+ * @param LeaderName
+ * @returns {AxiosPromise}
+ */
+export const notAgreeAssApply = (assId, LeaderName) => {
+  return request({
+    url: '/ass/notAgreeAssApply',
+    method: 'POST',
+    params: {
+      assId,
+      LeaderName
+    }
+  })
+}
+
+/**
+ * 换社长
+ * @param assId
+ * @param newNumber
+ * @returns {AxiosPromise}
+ * @constructor
+ */
+export const ChangeLeaderByNumber = (assId, newNumber) => {
+  return request({
+    url: '/ass/ChangeLeaderByNumber',
+    method: 'POST',
+    params: {
+      assId,
+      newNumber
+    }
+  })
+}
+
+/**
+ * 删除社团
+ * @param assId
+ * @returns {AxiosPromise}
+ */
+export const deleteThisAss = (assId) => {
+  return request({
+    url: '/ass/deleteThisAss',
+    method: 'POST',
+    params: {
+      assId
+    }
+  })
+}

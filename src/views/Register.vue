@@ -1,51 +1,59 @@
 <template>
   <!--登录表单的容器-->
   <div class="register_container">
-    <div class="title">
-      <span>学生社团管理系统</span>
-    </div>
-    <!--登录区域-->
-    <div class="register_box" style="margin-top: 50px">
-      <!--头像-->
-      <div class="avatar_box">
-        <img src="../assets/img/timg.jpg">
+    <div class="video-container">
+      <div :style="fixStyle" class="filter">
+        <div class="title">
+          <span>学生社团管理系统</span>
+        </div>
+        <!--登录区域-->
+        <div class="register_box" style="margin-top: 50px">
+          <!--头像-->
+          <div class="avatar_box">
+            <img src="../assets/img/timg.jpg">
+          </div>
+          <!--表单-->
+          <el-form :model="registerForm" :rules="registerRules" ref="registerForm" label- width="0px" class="register_form">
+            <el-form-item prop="name">
+              <el-input v-model="registerForm.name" placeholder="请输入用户名" prefix-icon="el-icon-user"></el-input>
+            </el-form-item>
+            <el-form-item prop="true_name">
+              <el-input v-model="registerForm.true_name" placeholder="请输入真实姓名" prefix-icon="el-icon-user-solid"></el-input>
+            </el-form-item>
+            <el-form-item prop="pwd">
+              <el-input type="password" v-model="registerForm.pwd" placeholder="请输入注册密码" prefix-icon="el-icon-lock"></el-input>
+            </el-form-item>
+            <el-form-item prop="repwd">
+              <el-input type="password" v-model="registerForm.repwd" placeholder="请输入重新输入密码" prefix-icon="el-icon-lock"></el-input>
+            </el-form-item>
+            <el-form-item prop="number">
+              <el-input v-model="registerForm.number" placeholder="请输入学号" prefix-icon="el-icon-s-grid"></el-input>
+            </el-form-item>
+            <el-form-item prop="gender">
+              <el-select v-model="registerForm.gender" clearable placeholder="请选择性别" >
+                <el-option
+                  v-for="item in genders"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item prop="phone">
+              <el-input v-model="registerForm.phone" placeholder="请输入电话号码" prefix-icon="el-icon-phone"></el-input>
+            </el-form-item>
+            <el-form-item class="register_btn">
+              <el-button type="warning" @click="back">返回</el-button>
+              <el-button type="primary" @click="submitForm('registerForm')">注册</el-button>
+              <el-button @click="resetForm('registerForm')">重置</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
       </div>
-      <!--表单-->
-      <el-form :model="registerForm" :rules="registerRules" ref="registerForm" label- width="0px" class="register_form">
-        <el-form-item prop="name">
-          <el-input v-model="registerForm.name" placeholder="请输入用户名" prefix-icon="el-icon-user"></el-input>
-        </el-form-item>
-        <el-form-item prop="true_name">
-          <el-input v-model="registerForm.true_name" placeholder="请输入真实姓名" prefix-icon="el-icon-user-solid"></el-input>
-        </el-form-item>
-        <el-form-item prop="pwd">
-          <el-input type="password" v-model="registerForm.pwd" placeholder="请输入注册密码" prefix-icon="el-icon-lock"></el-input>
-        </el-form-item>
-        <el-form-item prop="repwd">
-          <el-input type="password" v-model="registerForm.repwd" placeholder="请输入重新输入密码" prefix-icon="el-icon-lock"></el-input>
-        </el-form-item>
-        <el-form-item prop="number">
-          <el-input v-model="registerForm.number" placeholder="请输入学号" prefix-icon="el-icon-s-grid"></el-input>
-        </el-form-item>
-        <el-form-item prop="gender">
-          <el-select v-model="registerForm.gender" clearable placeholder="请选择性别" >
-            <el-option
-              v-for="item in genders"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item prop="phone">
-          <el-input v-model="registerForm.phone" placeholder="请输入电话号码" prefix-icon="el-icon-phone"></el-input>
-        </el-form-item>
-        <el-form-item class="register_btn">
-          <el-button type="warning" @click="back">返回</el-button>
-          <el-button type="primary" @click="submitForm('registerForm')">注册</el-button>
-          <el-button @click="resetForm('registerForm')">重置</el-button>
-        </el-form-item>
-      </el-form>
+      <video :style="fixStyle" autoplay loop muted class="fillWidth" v-on:canplay="canplay">
+        <source src="../assets/video/background.mp4" type="video/mp4"/>
+        浏览器不支持 video 标签，建议升级浏览器。
+      </video>
     </div>
   </div>
 </template>
@@ -66,6 +74,8 @@ export default {
         number: '',
         gender: ''
       },
+      vedioCanPlay: false,
+      fixStyle: '',
       registerRules: {
         name: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -101,7 +111,39 @@ export default {
       }]
     }
   },
+  mounted: function () {
+    window.onresize = () => {
+      const windowWidth = document.body.clientWidth
+      const windowHeight = document.body.clientHeight
+      const windowAspectRatio = windowHeight / windowWidth
+      let videoWidth
+      let videoHeight
+      if (windowAspectRatio < 0.5625) {
+        videoWidth = windowWidth
+        videoHeight = videoWidth * 0.5625
+        this.fixStyle = {
+          height: windowWidth * 0.5625 + 'px',
+          width: windowWidth + 'px',
+          'margin-bottom': (windowHeight - videoHeight) / 2 + 'px',
+          'margin-left': 'initial'
+        }
+      } else {
+        videoHeight = windowHeight
+        videoWidth = videoHeight / 0.5625
+        this.fixStyle = {
+          height: windowHeight + 'px',
+          width: windowHeight / 0.5625 + 'px',
+          'margin-left': (windowWidth - videoWidth) / 2 + 'px',
+          'margin-bottom': 'initial'
+        }
+      }
+    }
+    window.onresize()
+  },
   methods: {
+    canplay () {
+      this.vedioCanPlay = true
+    },
     submitForm (registerForm) {
       // eslint-disable-next-line no-unused-expressions
       this.$refs[registerForm].validate(valid => {
@@ -192,6 +234,19 @@ export default {
   background-color: #708090;
 }
 
+.home,
+.video-container {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+.video-container .filter {
+  z-index: 1;
+  position: absolute;
+  background: rgba(0, 0, 0, 0.4);
+  width: 100%;
+}
+
 .register_box {
   width: 450px;
   height: 590px;
@@ -199,7 +254,7 @@ export default {
   border-radius: 3px;
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 45%;
   transform: translate(-50%, -50%);
 
   .avatar_box{

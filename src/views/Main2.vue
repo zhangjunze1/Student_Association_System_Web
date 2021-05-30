@@ -48,6 +48,7 @@
             <!--下拉菜单-->
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item icon="el-icon-s-home" @click.native="change">首页信息</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-menu" @click.native="systemNotice">系统公告</el-dropdown-item>
               <el-dropdown-item icon="el-icon-switch-button" @click.native="quit">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>

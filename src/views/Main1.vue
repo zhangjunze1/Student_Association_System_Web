@@ -26,7 +26,7 @@
     <el-container>
       <!--头部布局-->
       <el-header >
-        <span style="margin-right: 20px; font-size: 18px;color: black;size: 20px">{{this.$root.USER.trueName }}{{this.$root.USER.position }},欢迎你的归来！</span>
+        <span style="margin-right: 20px; font-size: 18px;color: black;size: 20px">{{this.$root.USER.trueName }}{{this.$root.USER.position }},{{this.$root.ASS.assName}}欢迎你的归来！</span>
 
         <el-badge :value="this.$root.ApplyLeader.applyNum" class="item">
           <el-button size="small" @click="changeVue">用户申请</el-button>

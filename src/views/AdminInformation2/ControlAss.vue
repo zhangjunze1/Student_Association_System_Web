@@ -71,6 +71,11 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="assLeader"
+          label="社团社长"
+          width="150">
+        </el-table-column>
+        <el-table-column
           prop=""
           label="">
         </el-table-column>
@@ -78,8 +83,8 @@
           label="操作"
           width="300">
           <template slot-scope="scope">
-            <el-button  v-if="scope.row.assState=='申请中'" type="primary" size="mini" icon="el-icon-circle-check" @click="agreeAss">同意</el-button>
-            <el-button  v-if="scope.row.assState=='申请中'" type="warning" size="mini" icon="el-icon-circle-close" @click="notagreeAss">不同意</el-button>
+            <el-button  v-if="scope.row.assState=='申请中'" type="primary" size="mini" icon="el-icon-circle-check" @click="agreeAss(scope.row)">同意</el-button>
+            <el-button  v-if="scope.row.assState=='申请中'" type="warning" size="mini" icon="el-icon-circle-close" @click="notagreeAss(scope.row)">不同意</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -103,7 +108,7 @@
 
 <script>
 
-import { findAssListQueryPage } from '@/api/assData'
+import { agreeAssApply, findAssListQueryPage, notAgreeAssApply } from '@/api/assData'
 
 export default {
   name: 'ControlAss',
@@ -163,6 +168,24 @@ export default {
       this.formInline.assState = ''
       this.formInline.assName = ''
       this.getAssAllList()
+    },
+    async agreeAss (e) {
+      const { data } = await agreeAssApply(e.assId, e.assLeader)
+      this.$root.ASSAPPLY.applyNum = this.$root.ASSAPPLY.applyNum - 1
+      if (this.$root.ASSAPPLY.applyNum < 0) {
+        this.$root.ASSAPPLY.applyNum = 0
+      }
+      this.getAssAllList()
+      console.log(data)
+    },
+    async notagreeAss (e) {
+      const { data } = await notAgreeAssApply(e.assId, e.assLeader)
+      this.$root.ASSAPPLY.applyNum = this.$root.ASSAPPLY.applyNum - 1
+      if (this.$root.ASSAPPLY.applyNum < 0) {
+        this.$root.ASSAPPLY.applyNum = 0
+      }
+      this.getAssAllList()
+      console.log(data)
     }
   }
 }
