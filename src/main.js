@@ -61,6 +61,9 @@ new Vue({
       }],
       ASSAPPLY: [{
         applyNum: null
+      }],
+      NOTICE: [{
+        notice: null
       }]
     }
   },

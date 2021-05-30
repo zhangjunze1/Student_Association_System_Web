@@ -111,3 +111,18 @@ export const findAssMember = (current, size, assId, trueName, number, memberAssS
     }
   })
 }
+
+/**
+ * 删除社员用户
+ * @param userId
+ * @returns {AxiosPromise}
+ */
+export const membersDelete = (userId) => {
+  return request({
+    url: '/user/membersDelete',
+    method: 'POST',
+    params: {
+      userId
+    }
+  })
+}

@@ -62,6 +62,20 @@
         ©Copyright 2021 zhangjz-toishT工作室 | 浙大城市学院小伙
       </el-footer>
     </el-container>
+
+    <!--修改社长的对话框-->
+    <el-dialog title="系统公告" :visible.sync="NoticeDialogVisible" width="40%" @close="editDialogClosed">
+      <el-form ref="form" :model="form" label-width="70px" size="mini">
+        <el-form-item label="公告内容" style="width: 500px;height: 300px">
+          <el-input show-word-limit type="textarea" :autosize="{minRows:15}" v-model="form.notice" ></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="NoticeDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="editNotice">修改</el-button>
+      </span>
+    </el-dialog>
+
   </el-container>
 </template>
 
@@ -70,18 +84,24 @@
 import MenuTree2 from '@/components/MenuTree2'
 import { findAssListQueryPage } from '@/api/assData'
 import { findActivityAndApplyCount } from '@/api/activity'
+import { editSystemNotice, findSystemNotice } from '@/api/system'
 export default {
   name: 'Main2',
   components: { MenuTree2 },
   data () {
     return {
       isCollapse: false,
-      kuList: []
+      kuList: [],
+      NoticeDialogVisible: false,
+      form: {
+        notice: this.$root.NOTICE.notice
+      }
     }
   },
   created () {
     this.getAssAllList()
     this.getActivityAndApplyCount()
+    this.getSystemNotice()
   },
   methods: {
     toggleCollapse () {
@@ -111,6 +131,28 @@ export default {
     },
     handleCommand (command) {
       this.$router.push({ path: '/controlAct', query: { assName: command, activityState: '审核中' } })
+    },
+    systemNotice () {
+      this.NoticeDialogVisible = true
+    },
+    async getSystemNotice () {
+      const { data } = await findSystemNotice()
+      this.$root.NOTICE.notice = data.data.notice
+      console.log(data)
+    },
+    async editNotice () {
+      const { data } = await editSystemNotice(this.form.notice)
+      this.$root.NOTICE.notice = data.data.notice
+      if (data.code === 20000) {
+        this.$notify({
+          title: '成功',
+          message: '修改成功',
+          type: 'success',
+          duration: 2000
+        })
+      }
+      this.NoticeDialogVisible = false
+      console.log(data)
     }
   }
 }

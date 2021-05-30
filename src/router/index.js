@@ -153,11 +153,6 @@ const routes = [
         component: () => import('../views/AdminInformation2/Control/Member.vue')
       },
       {
-        path: '/notice',
-        name: 'Notice',
-        component: () => import('../views/AdminInformation2/Control/Notice.vue')
-      },
-      {
         path: '/controlAss',
         name: 'ControlAss',
         component: () => import('../views/AdminInformation2/ControlAss.vue')
