@@ -63,7 +63,7 @@
       </el-footer>
     </el-container>
 
-    <!--修改社长的对话框-->
+    <!--修改系统公告的对话框-->
     <el-dialog title="系统公告" :visible.sync="NoticeDialogVisible" width="40%" @close="editDialogClosed">
       <el-form ref="form" :model="form" label-width="70px" size="mini">
         <el-form-item label="公告内容" style="width: 500px;height: 300px">

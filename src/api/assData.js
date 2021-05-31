@@ -209,3 +209,20 @@ export const deleteThisAss = (assId) => {
     }
   })
 }
+
+/**
+ * 更改社团公告
+ * @param assId
+ * @param notice
+ * @returns {AxiosPromise}
+ */
+export const editAssNotice = (assId, notice) => {
+  return request({
+    url: '/ass/editAssNotice',
+    method: 'POST',
+    params: {
+      assId,
+      notice
+    }
+  })
+}

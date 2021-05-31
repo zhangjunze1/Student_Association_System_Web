@@ -51,7 +51,13 @@
           prop="userTrueName"
           label="社长">
         </el-table-column>
-
+        <el-table-column
+          label="公告"
+          width="180">
+          <template slot-scope="scope">
+            <el-button type="primary" size="mini" icon="el-icon-s-grid" @click="showNotice(scope.row)">公告</el-button>
+          </template>
+        </el-table-column>
         <!--        <el-table-column-->
         <!--          label="操作"-->
         <!--          width="180">-->
@@ -103,6 +109,14 @@ export default {
     this.getMyAssListPage()
   },
   methods: {
+    showNotice (e) {
+      this.$notify({
+        title: e.assName + '公告',
+        message: e.assNotice,
+        type: 'success',
+        duration: 2000
+      })
+    },
     onSubmit () {
       console.log('submit!')
     },

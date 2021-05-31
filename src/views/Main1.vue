@@ -39,6 +39,7 @@
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item icon="el-icon-s-home" @click.native="change">首页信息</el-dropdown-item>
               <el-dropdown-item icon="el-icon-menu" @click.native="showSystemNotice">系统公告</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-s-grid" @click.native="NowassNotice">社团公告</el-dropdown-item>
               <el-dropdown-item icon="el-icon-switch-button" @click.native="quit">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -52,6 +53,19 @@
         ©Copyright 2021 zhangjz-toishT工作室 | 浙大城市学院小伙
       </el-footer>
     </el-container>
+
+    <!--修改社团公告的对话框-->
+    <el-dialog title="社团公告" :visible.sync="NoticeDialogVisible" width="40%" @close="editDialogClosed">
+      <el-form ref="form" :model="form" label-width="70px" size="mini">
+        <el-form-item label="公告内容" style="width: 500px;height: 300px">
+          <el-input show-word-limit type="textarea" :autosize="{minRows:15}" v-model="form.notice" ></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="NoticeDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="editNotice">修改</el-button>
+      </span>
+    </el-dialog>
   </el-container>
 </template>
 
@@ -61,6 +75,7 @@
 import MenuTree1 from '@/components/MenuTree1'
 import { findAssMember } from '@/api/user'
 import { findSystemNotice } from '@/api/system'
+import { editAssNotice, findLeaderAss } from '@/api/assData'
 
 export default {
   name: 'Main1',
@@ -73,7 +88,11 @@ export default {
       memberAssState: '申请中',
       current: 1,
       pageSize: 10,
-      systemnotice: ''
+      systemnotice: '',
+      form: {
+        notice: ''
+      },
+      NoticeDialogVisible: false
     }
   },
   created () {
@@ -84,6 +103,26 @@ export default {
     this.$router.push('/host1')
   },
   methods: {
+    async NowassNotice () {
+      const { data } = await findLeaderAss(this.$root.USER.id)
+      this.$root.ASS.assId = data.data.ass.assId
+      this.$root.ASS.assNotice = data.data.ass.assNotice
+      this.form.notice = data.data.ass.assNotice
+      this.NoticeDialogVisible = true
+    },
+    async editNotice () {
+      const { data } = await editAssNotice(this.$root.ASS.assId, this.form.notice)
+      if (data.code === 20000) {
+        this.$notify({
+          title: '成功',
+          message: '成功修改社团公告',
+          type: 'success',
+          duration: 2000
+        })
+      }
+      this.NoticeDialogVisible = false
+      console.log(data)
+    },
     toggleCollapse () {
       this.isCollapse = !this.isCollapse
     },
