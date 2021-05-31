@@ -30,6 +30,18 @@
             </div>
           </el-col>
         </el-row>
+
+<!--        <el-row style="margin-top: 100px;margin-left: 300px">-->
+<!--          <div class="title" style="margin-right: 200px;height: 40px">-->
+<!--              <div class="inner-container">-->
+<!--                <p class="text" v-for="(text, index) in arr" :key="index">{{text}}</p>-->
+<!--              </div>-->
+<!--          </div>-->
+<!--        </el-row>-->
+<!--        <el-row>-->
+
+<!--        </el-row>-->
+
       </div>
             <video :style="fixStyle" autoplay loop muted class="fillWidth" v-on:canplay="canplay">
               <source src="../assets/video/background.mp4" type="video/mp4"/>
@@ -52,6 +64,14 @@ export default {
       activityNum: 33333,
       vedioCanPlay: false,
       fixStyle: ''
+      // arr: [
+      //   '1 不是被郭德纲发现的，也不是一开始就收为徒弟。',
+      //   '2 现在雅阁这个状态像极了新A4L上市那段日子。',
+      //   '3 低配太寒碜，各种需要加装，中配定价过高，又没啥特色',
+      //   '4 然后各种机油门、经销商造反什么的幺蛾子。',
+      //   '5 看五月销量，建议参考A4，打8折吧。',
+      //   '1 不是被郭德纲发现的，也不是一开始就收为徒弟。'
+      // ]
     }
   },
   created () {
@@ -143,4 +163,19 @@ export default {
   font-size: 1.5rem;
   color: #fff;
 }
+
+.inner-container {
+  animation: myMove 5s linear infinite;
+  animation-fill-mode: forwards;
+}
+/*文字无缝滚动*/
+@keyframes myMove {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-150px);
+  }
+}
+
 </style>
