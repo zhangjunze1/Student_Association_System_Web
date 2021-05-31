@@ -75,7 +75,8 @@
           <template slot-scope="scope">
             <el-button type="primary" size="mini" icon="el-icon-search" @click="showConcentDialog(scope.row)">报名通知</el-button>
             <el-button v-if="scope.row.activityState==='活动结束'&&scope.row.activityEndContent!=null" type="primary" size="mini" icon="el-icon-search" @click="showEndConcentDialog(scope.row)">活动结束</el-button>
-            <el-button v-if="scope.row.activityState==='活动结束'&&scope.row.activityEndContent==null" type="warning" size="mini" icon="el-icon-plus" @click="addEndConcentDialog(scope.row)">活动结束</el-button>
+            <el-button v-if="scope.row.activityState==='报名中'&&scope.row.activityEndContent==null" type="success" size="mini" icon="el-icon-circle-check" @click="endApply(scope.row)">报名结束</el-button>
+            <el-button v-if="scope.row.activityState==='报名结束'&&scope.row.activityEndContent==null" type="warning" size="mini" icon="el-icon-plus" @click="endActivity(scope.row)">活动结语</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -95,7 +96,7 @@
       </div>
     </el-card>
 
-    <!--添加商品的对话框-->
+    <!--添加活动的对话框-->
     <el-dialog title="添加活动" :visible.sync="addDialogVisible" width="40%" @close="addDialogClosed">
       <!--内容主体区域-->
       <el-form :model="addForm" :rules="addFormRules" ref="addRuleForm" label-width="100px">
@@ -167,12 +168,64 @@
     <el-dialog title="图片预览" :visible.sync="previewDialogVisible" width="50%">
       <img :src="picPreviewPath" alt="" class="previewImg">
     </el-dialog>
+
+    <!--活动结语的对话框-->
+    <el-dialog title="活动结语" :visible.sync="endDialogVisible" width="40%" @close="endDialogClosed">
+      <!--内容主体区域-->
+      <el-form :model="endForm" :rules="endFormRules" ref="endRuleForm" label-width="100px">
+        <el-form-item label="活动编号" prop="activityId">
+          <el-input disabled v-model="endForm.activityId" ></el-input>
+        </el-form-item>
+        <el-form-item label="活动结语" prop="activityEndContent">
+          <el-input type="textarea" v-model="endForm.activityEndContent" placeholder="请输入活动结语内容"></el-input>
+        </el-form-item>
+        <el-form-item label="上传图片" prop="imageUrl" ref="uploadElement">
+          <el-input disabled v-model="endForm.imageUrl" v-if="true" ></el-input>
+          <!--          <el-upload-->
+          <!--            class="avatar-uploader"-->
+          <!--            ref="upload"-->
+          <!--            :show-file-list="false"-->
+          <!--            action="http://localhost:8085/oss/activityPre/uploadFile"-->
+          <!--            :on-success="handleSuccess"-->
+          <!--            :on-preview="handlePreview"-->
+          <!--            :auto-upload="false"-->
+          <!--            :data="addForm"-->
+          <!--            list-type="picture"-->
+          <!--            :limit="1"-->
+          <!--          >-->
+          <!--            <el-button size="small" type="primary">点击上传</el-button>-->
+          <!--            <img v-if="addForm.imageUrl" :src="addForm.imageUrl" class="avatar">-->
+          <!--            <i v-else class="el-icon-plus avatar-uploader-icon" ></i>-->
+          <!--          </el-upload>-->
+          <el-upload
+            action="http://localhost:8085/oss/activityPre/uploadFile"
+            :on-preview="handlePreview1"
+            :http-request="upload1"
+            :on-remove="handleRemove1"
+            :before-upload="beforeUpload1"
+            list-type="picture"
+            :on-success="handleSuccess1"
+          >
+            <el-button size="small" type="primary">点击上传</el-button>
+          </el-upload>
+        </el-form-item>
+      </el-form>
+      <!--底部区域-->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="resetform('endForm')">取消</el-button>
+        <el-button type="primary" @click="addEndActivity">确定</el-button>
+      </span>
+    </el-dialog>
+
+    <el-dialog title="图片预览" :visible.sync="previewDialogVisible1" width="50%">
+      <img :src="picPreviewPath1" alt="" class="previewImg">
+    </el-dialog>
   </div>
 </template>
 
 <script>
 
-import { addActivityPic, addNewActivity, findAssActivityPage } from '@/api/activity'
+import { addActivityPic, addEndActivity, addNewActivity, endActivityApply, findAssActivityPage } from '@/api/activity'
 
 export default {
   name: 'ApplyActivity',
@@ -191,9 +244,13 @@ export default {
       loading: true,
       // 控制添加活动对话框的显示和隐藏
       addDialogVisible: false,
+      // 控制活动结语对话框的显示和隐藏
+      endDialogVisible: false,
       // 图片预览对话框
       previewDialogVisible: false,
+      previewDialogVisible1: false,
       picPreviewPath: '',
+      picPreviewPath1: '',
       // 添加活动的表单数据
       addForm: {
         activitySub: '',
@@ -204,6 +261,14 @@ export default {
         activityFinishTime2: '',
         activityScore: '',
         imageUrl: '',
+        // 图片的数组
+        pics: []
+      },
+      // 活动结语的表单数据
+      endForm: {
+        activityEndContent: '',
+        imageUrl: '',
+        activityId: '',
         // 图片的数组
         pics: []
       },
@@ -229,6 +294,14 @@ export default {
         ],
         activityScore: [
           { required: true, message: '活动分值不能为空', trigger: 'blur' }
+        ],
+        imageUrl: [
+          { required: true, message: '请上传图片', trigger: 'blur' }
+        ]
+      },
+      endFormRules: {
+        activityEndContent: [
+          { required: true, message: '活动结语内容不能为空', trigger: 'blur' }
         ],
         imageUrl: [
           { required: true, message: '请上传图片', trigger: 'blur' }
@@ -283,14 +356,22 @@ export default {
     },
     handleAssItemClick (e) {
       console.log(e.activityId)
-      this.$router.push({ path: '/activity/' + e.activityId + '/content1', query: { activity: e, assName: this.$root.ASS.assName } })
+      this.$router.push({ path: '/activity/' + e.activityId + '/activityMember1', query: { activity: e, assName: this.$root.ASS.assName } })
     },
     // 监听活动的对话框关闭事件
     addDialogClosed () {
       this.$refs.addRuleForm.resetFields()
     },
+    // 监听活动结语的对话框关闭事件
+    endDialogClosed () {
+      this.$refs.endRuleForm.resetFields()
+    },
     // 监听图片上传成功事件
     handleSuccess (response) {
+
+    },
+    // 监听图片上传成功事件
+    handleSuccess1 (response) {
 
     },
     handlePreview (file) {
@@ -298,7 +379,19 @@ export default {
       console.log(this.picPreviewPath)
       this.previewDialogVisible = true
     },
+    handlePreview1 (file) {
+      this.picPreviewPath1 = file.response.data.url
+      console.log(this.picPreviewPath1)
+      this.previewDialogVisible1 = true
+    },
     beforeUpload (file) {
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!')
+      }
+      return isLt2M
+    },
+    beforeUpload1 (file) {
       const isLt2M = file.size / 1024 / 1024 < 2
       if (!isLt2M) {
         this.$message.error('上传头像图片大小不能超过 2MB!')
@@ -313,6 +406,14 @@ export default {
       this.addForm.imageUrl = data.data.url
       console.log(this.addForm.imageUrl)
     },
+    async upload1 (item) {
+      var formData = new FormData()
+      formData.append('file', item.file)
+      const { data } = await addActivityPic(formData)
+      console.log(data)
+      this.endForm.imageUrl = data.data.url
+      console.log(this.endForm.imageUrl)
+    },
     handleRemove (file) {
       // 1.获取将要删除图片的临时路径
       const filePath = file.response.data.tmp_path
@@ -321,6 +422,15 @@ export default {
       // 3.调用splice方法，移除图片信息
       this.addForm.splice(i, 1)
       this.addForm.imageUrl = ''
+    },
+    handleRemove1 (file) {
+      // 1.获取将要删除图片的临时路径
+      const filePath = file.response.data.tmp_path
+      // 2.从pics数组中，找到图片对应的索引值
+      const i = this.endForm.pics.findIndex(x => x.pic === filePath)
+      // 3.调用splice方法，移除图片信息
+      this.endForm.splice(i, 1)
+      this.endForm.imageUrl = ''
     },
     async addActivity () {
       const { data } = await addNewActivity(this.addForm.activitySub, this.addForm.activityContent, this.addForm.activityScore, this.addForm.activityFinishTime1, this.addForm.activityFinishTime2
@@ -335,13 +445,58 @@ export default {
         })
       }
       this.resetform('addForm')
+      this.getAssActivity()
+      this.getAssActivity()
       this.addDialogVisible = false
       this.getAssActivity()
       this.getAssActivity()
       this.getAssActivity()
       this.getAssActivity()
+      this.getAssActivity()
+    },
+    async endApply (e) {
+      const confirmResult = await this.$confirm('将<' + e.activitySub + '>的报名截至, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => {
+        return err
+      })
+      // 如果商家点击确定返回字符串 confirm
+      // 如果商家点击取消返回字符串 cancel
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('取消本次操作')
+      }
+      const { data } = await endActivityApply(e.activityId)
+      if (data.code === 20000) {
+        this.$notify({
+          title: '成功',
+          message: '<' + e.activitySub + '>报名截止',
+          type: 'success',
+          duration: 2000
+        })
+      }
+      this.getAssActivity()
+      console.log(data)
+    },
+    endActivity (e) {
+      this.endDialogVisible = true
+      this.endForm.activityId = e.activityId
+    },
+    async addEndActivity () {
+      const { data } = await addEndActivity(this.endForm.activityId, this.endForm.activityEndContent, this.endForm.imageUrl)
+      console.log(data)
+      if (data.code === 20000) {
+        this.$notify({
+          title: '成功',
+          message: '活动最终结束，并统计分值',
+          type: 'success',
+          duration: 2000
+        })
+      }
+      this.endDialogVisible = false
+      this.getAssActivity()
     }
-
   }
 }
 </script>

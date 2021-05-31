@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     initMessage () {
-      this.percent = this.$root.USER.score / 1.5
+      this.percent = Math.ceil(this.$root.USER.score / 1.5)
       this.form.id = this.$root.USER.id
       this.form.name = this.$root.USER.name
       this.form.password = this.$root.USER.pwd

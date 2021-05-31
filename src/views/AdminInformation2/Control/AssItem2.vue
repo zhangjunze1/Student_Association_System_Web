@@ -153,7 +153,7 @@ export default {
     },
     handleAssItemClick (e) {
       console.log(e.activityId)
-      this.$router.push({ path: '/activity2/' + e.activityId + '/content2', query: { activity: e, assName: this.$route.query.name } })
+      this.$router.push({ path: '/activity2/' + e.activityId + '/activityMember', query: { activity: e, assName: this.$route.query.name } })
     }
   }
 }

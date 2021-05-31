@@ -126,3 +126,22 @@ export const membersDelete = (userId) => {
     }
   })
 }
+
+/**
+ * 获取活动对应的参加人员
+ * @param current
+ * @param size
+ * @param activityId
+ * @returns {AxiosPromise}
+ */
+export const findActivityMembers = (current, size, activityId) => {
+  return request({
+    url: '/user/findActivityMembers',
+    method: 'GET',
+    params: {
+      current,
+      size,
+      activityId
+    }
+  })
+}

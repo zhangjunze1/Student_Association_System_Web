@@ -102,6 +102,7 @@ export default {
     this.getAssAllList()
     this.getActivityAndApplyCount()
     this.getSystemNotice()
+    this.$router.push('/host2')
   },
   methods: {
     toggleCollapse () {
@@ -132,7 +133,9 @@ export default {
     handleCommand (command) {
       this.$router.push({ path: '/controlAct', query: { assName: command, activityState: '审核中' } })
     },
-    systemNotice () {
+    async systemNotice () {
+      const { data } = await findSystemNotice()
+      this.$root.NOTICE.notice = data.data.notice
       this.NoticeDialogVisible = true
     },
     async getSystemNotice () {

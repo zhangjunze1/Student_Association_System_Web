@@ -38,6 +38,7 @@
             <!--下拉菜单-->
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item icon="el-icon-s-home" @click.native="change">首页信息</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-menu" @click.native="showSystemNotice">系统公告</el-dropdown-item>
               <el-dropdown-item icon="el-icon-switch-button" @click.native="quit">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -59,6 +60,7 @@
 
 import MenuTree1 from '@/components/MenuTree1'
 import { findAssMember } from '@/api/user'
+import { findSystemNotice } from '@/api/system'
 
 export default {
   name: 'Main1',
@@ -70,7 +72,8 @@ export default {
       userNumber: '',
       memberAssState: '申请中',
       current: 1,
-      pageSize: 10
+      pageSize: 10,
+      systemnotice: ''
     }
   },
   created () {
@@ -78,6 +81,7 @@ export default {
     this.getAssMember()
     this.getAssMember()
     this.getAssMember()
+    this.$router.push('/host1')
   },
   methods: {
     toggleCollapse () {
@@ -99,6 +103,15 @@ export default {
     changeVue () {
       this.getAssMember()
       this.$router.push({ path: '/assControl', query: { state: '申请中' } })
+    },
+    async showSystemNotice () {
+      const { data } = await findSystemNotice()
+      this.systemnotice = data.data.notice
+      this.$notify({
+        title: '系统公告',
+        message: this.systemnotice,
+        type: 'success'
+      })
     }
   }
 }

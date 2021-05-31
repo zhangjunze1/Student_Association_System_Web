@@ -34,6 +34,7 @@
             <!--下拉菜单-->
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item icon="el-icon-s-home" @click.native="change">首页信息</el-dropdown-item>
+              <el-dropdown-item icon="el-icon-menu" @click.native="showSystemNotice">系统公告</el-dropdown-item>
               <el-dropdown-item icon="el-icon-switch-button" @click.native="quit">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -53,13 +54,18 @@
 <script>
 // eslint-disable-next-line no-unused-vars
 import MenuTree from '@/components/MenuTree'
+import { findSystemNotice } from '@/api/system'
 export default {
   name: 'Main',
   components: { MenuTree },
   data () {
     return {
-      isCollapse: false
+      isCollapse: false,
+      systemnotice: ''
     }
+  },
+  created () {
+    this.$router.push('/host')
   },
   methods: {
     toggleCollapse () {
@@ -71,6 +77,15 @@ export default {
     },
     change () {
       this.$router.push('/host')
+    },
+    async showSystemNotice () {
+      const { data } = await findSystemNotice()
+      this.systemnotice = data.data.notice
+      this.$notify({
+        title: '系统公告',
+        message: this.systemnotice,
+        type: 'success'
+      })
     }
   }
 }

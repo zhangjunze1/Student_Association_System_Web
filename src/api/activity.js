@@ -117,3 +117,67 @@ export const findActivityAndApplyCount = () => {
     method: 'get'
   })
 }
+
+/**
+ * 审批同意活动
+ * @param activityId
+ * @returns {AxiosPromise}
+ */
+export const agreeActivity = (activityId) => {
+  return request({
+    url: '/activity/agreeActivity',
+    method: 'POST',
+    params: {
+      activityId
+    }
+  })
+}
+
+/**
+ * 拒绝活动
+ * @param activityId
+ * @returns {AxiosPromise}
+ */
+export const notAgreeActivity = (activityId) => {
+  return request({
+    url: '/activity/notAgreeActivity',
+    method: 'POST',
+    params: {
+      activityId
+    }
+  })
+}
+
+/**
+ * 活动截至报名
+ * @param activityId
+ * @returns {AxiosPromise}
+ */
+export const endActivityApply = (activityId) => {
+  return request({
+    url: '/activity/endActivityApply',
+    method: 'POST',
+    params: {
+      activityId
+    }
+  })
+}
+
+/**
+ * 活动结语
+ * @param activityId
+ * @param activityEndContent
+ * @param imageUrl
+ * @returns {AxiosPromise}
+ */
+export const addEndActivity = (activityId, activityEndContent, imageUrl) => {
+  return request({
+    url: '/activity/addEndActivity',
+    method: 'POST',
+    params: {
+      activityId,
+      activityEndContent,
+      imageUrl
+    }
+  })
+}

@@ -111,9 +111,9 @@
           label="操作"
           width="250">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.memberAssState=='申请中'" type="primary" size="mini" icon="el-icon-circle-check" @click="agreeApply(scope.row.userId)">同意</el-button>
-            <el-button v-if="scope.row.memberAssState=='已通过'" type="danger" size="mini" icon="el-icon-delete" @click="removeUserById(scope.row.userId)">删除成员</el-button>
-            <el-button v-if="scope.row.memberAssState=='申请中'" type="warning" size="mini" icon="el-icon-circle-close" @click="removeUserById(scope.row.userId)">不同意</el-button>
+            <el-button v-if="scope.row.memberAssState=='申请中'" type="primary" size="mini" icon="el-icon-circle-check" @click="agreeApply(scope.row)">同意</el-button>
+            <el-button v-if="scope.row.memberAssState=='已通过'" type="danger" size="mini" icon="el-icon-delete" @click="deleteMember(scope.row)">删除成员</el-button>
+            <el-button v-if="scope.row.memberAssState=='申请中'" type="warning" size="mini" icon="el-icon-circle-close" @click="notagreeApply(scope.row)">不同意</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -139,6 +139,7 @@
 <script>
 
 import { findAssMember } from '@/api/user'
+import { agreeApplyForMyAss, deleteMemberFromAss, notagreeApplyForMyAss } from '@/api/system'
 
 export default {
   name: 'AssControl1',
@@ -218,6 +219,87 @@ export default {
           })
         }
       })
+    },
+    async agreeApply (e) {
+      const confirmResult = await this.$confirm('将同意<' + e.userTrueName + '>发起入社申请, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => {
+        return err
+      })
+      // 如果商家点击确定返回字符串 confirm
+      // 如果商家点击取消返回字符串 cancel
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('取消本次审批')
+      }
+      const { data } = await agreeApplyForMyAss(this.$root.ASS.assId, e.userId)
+      if (data.code === 20000) {
+        this.$notify({
+          title: '成功',
+          message: '<' + e.userTrueName + '>审核通过本社团',
+          type: 'success',
+          duration: 2000
+        })
+      }
+      if (this.$root.ApplyLeader.applyNum > 0) {
+        this.$root.ApplyLeader.applyNum = this.$root.ApplyLeader.applyNum - 1
+      }
+      this.getAssMember()
+      console.log(data)
+    },
+    async notagreeApply (e) {
+      const confirmResult = await this.$confirm('将拒绝<' + e.userTrueName + '>发起入社申请, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => {
+        return err
+      })
+      // 如果商家点击确定返回字符串 confirm
+      // 如果商家点击取消返回字符串 cancel
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('取消本次审批')
+      }
+      const { data } = await notagreeApplyForMyAss(this.$root.ASS.assId, e.userId)
+      if (data.code === 20000) {
+        this.$notify({
+          title: '成功',
+          message: '拒绝<' + e.userTrueName + '>通过本社团',
+          type: 'success',
+          duration: 2000
+        })
+      }
+      if (this.$root.ApplyLeader.applyNum > 0) {
+        this.$root.ApplyLeader.applyNum = this.$root.ApplyLeader.applyNum - 1
+      }
+      this.getAssMember()
+      console.log(data)
+    },
+    async deleteMember (e) {
+      const confirmResult = await this.$confirm('将继续开除<' + e.userTrueName + '>?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => {
+        return err
+      })
+      // 如果商家点击确定返回字符串 confirm
+      // 如果商家点击取消返回字符串 cancel
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('取消本次删除操作')
+      }
+      const { data } = await deleteMemberFromAss(this.$root.ASS.assId, e.userId)
+      if (data.code === 20000) {
+        this.$notify({
+          title: '成功',
+          message: '成功删除<' + e.userTrueName + '>',
+          type: 'success',
+          duration: 2000
+        })
+      }
+      this.getAssMember()
+      console.log(data)
     }
   }
 }

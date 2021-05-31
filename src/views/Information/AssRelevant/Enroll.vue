@@ -56,7 +56,7 @@
           label="操作"
           >
           <template slot-scope="scope">
-            <el-button type="primary" size="mini" icon="el-icon-circle-plus-outline" @click="addDialog(scope.row.assId)">报名</el-button>
+            <el-button v-if="scope.row.assId!=assId" type="primary" size="mini" icon="el-icon-circle-plus-outline" @click="applyForAss(scope.row)">报名</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -82,6 +82,7 @@
 <script>
 
 import { findAssListPage } from '@/api/assData'
+import { addApplyForAss } from '@/api/system'
 
 export default {
   name: 'Enroll',
@@ -131,7 +132,7 @@ export default {
           duration: 1200
         })
       } else {
-        this.$router.push({ path: '/myAss/' + e.assId + '/activity', query: { name: e.assName, state: '已通过', success: 1 } })
+        this.$router.push({ path: '/myAss/' + e.assId + '/activity', query: { name: e.assName, state: '已通过', success: 0 } })
       }
     },
     async getAssListPage () {
@@ -140,6 +141,51 @@ export default {
       this.AssList = data.data.Ass
       this.total = data.data.total
       this.loading = false
+    },
+    async applyForAss (e) {
+      const confirmResult = await this.$confirm('将向<' + e.assName + '>发起入社申请, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => {
+        return err
+      })
+      // 如果商家点击确定返回字符串 confirm
+      // 如果商家点击取消返回字符串 cancel
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('已经取消入社申请')
+      }
+      const { data } = await addApplyForAss(e.assId, this.$root.USER.id)
+      console.log(data)
+      if (data.code === 3026) {
+        this.$notify({
+          title: '警告',
+          message: '您已向<' + e.assName + '>发出过入社请求，尚未审核通过',
+          type: 'warning',
+          duration: 2000
+        })
+      } else if (data.code === 3027) {
+        this.$notify({
+          title: '警告',
+          message: '您已是<' + e.assName + '>的社员',
+          type: 'warning',
+          duration: 2000
+        })
+      } else if (data.code === 20000) {
+        this.$notify({
+          title: '成功',
+          message: '成功向<' + e.assName + '>发起入社请求',
+          type: 'success',
+          duration: 2000
+        })
+      } else {
+        this.$notify({
+          title: '警告',
+          message: data.message,
+          type: 'warning',
+          duration: 2000
+        })
+      }
     }
   }
 }

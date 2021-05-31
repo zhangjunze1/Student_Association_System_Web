@@ -96,7 +96,8 @@
           <template slot-scope="scope">
             <el-button type="primary" size="mini" icon="el-icon-search" @click="showConcentDialog(scope.row)">报名通知</el-button>
             <el-button v-if="scope.row.activityState==='活动结束'&&scope.row.activityEndContent!=''" type="primary" size="mini" icon="el-icon-search" @click="showEndConcentDialog(scope.row)">活动结束</el-button>
-            <el-button v-if="scope.row.activityState==='审核中'" type="warning" size="mini" icon="el-icon-circle-check" @click="showEndConcentDialog(scope.row)">通过</el-button>
+            <el-button v-if="scope.row.activityState==='审核中'" type="success" size="mini" icon="el-icon-circle-check" @click="agreeApply(scope.row)">通过</el-button>
+            <el-button v-if="scope.row.activityState==='审核中'" type="warning" size="mini" icon="el-icon-circle-check" @click="notagreeApply(scope.row)">不通过</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -108,7 +109,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="current"
-          :page-sizes="[2,6,10,20]"
+          :page-sizes="[2,5,10,20]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total">
@@ -121,7 +122,7 @@
 
 <script>
 
-import { findApplyActivity } from '@/api/activity'
+import { agreeActivity, findApplyActivity, notAgreeActivity } from '@/api/activity'
 import { findAssList } from '@/api/assData'
 
 export default {
@@ -131,7 +132,7 @@ export default {
       // 当前页
       current: 1,
       // 每页显示的条数
-      pageSize: 6,
+      pageSize: 5,
       // 总条数
       total: 200,
       activityList: [],
@@ -154,6 +155,27 @@ export default {
     this.getApplyActivity()
   },
   methods: {
+    onSubmit () {
+      console.log('submit!')
+    },
+    // 当每一页条数改变的时候，
+    handleSizeChange (val) {
+      // eslint-disable-next-line no-template-curly-in-string
+      console.log(`每页 ${val} 条`)
+      // 将val赋值给size
+      this.pageSize = val
+      // 重新去后台查询数据
+      this.getApplyActivity()
+      this.getAssList()
+    },
+    // 当页码改变的时候
+    handleCurrentChange (val) {
+      // eslint-disable-next-line no-template-curly-in-string
+      console.log(`当前页: ${val}`)
+      this.current = val
+      this.getApplyActivity()
+      this.getAssList()
+    },
     async getApplyActivity () {
       const { data } = await findApplyActivity(this.current, this.pageSize, this.formInline.assName, this.formInline.activityState)
       this.activityList = data.data.activities
@@ -180,7 +202,59 @@ export default {
     },
     handleAssItemClick (e) {
       console.log(e.activityId)
-      this.$router.push({ path: '/activity2/' + e.activityId + '/content2', query: { activity: e, assName: this.$route.query.name } })
+      this.$router.push({ path: '/activity2/' + e.activityId + '/activityMember', query: { activity: e, assName: this.$route.query.name } })
+    },
+    async agreeApply (e) {
+      const confirmResult = await this.$confirm('是否将审批通过<' + e.activitySub + '>?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => {
+        return err
+      })
+      // 如果商家点击确定返回字符串 confirm
+      // 如果商家点击取消返回字符串 cancel
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('取消本次审批')
+      }
+      const { data } = await agreeActivity(e.activityId)
+      if (data.code === 20000) {
+        this.$notify({
+          title: '成功',
+          message: '<' + e.activitySub + '>已审批通过',
+          type: 'success',
+          duration: 2000
+        })
+      }
+      this.getApplyActivity()
+      this.getAssList()
+      console.log(data)
+    },
+    async notagreeApply (e) {
+      const confirmResult = await this.$confirm('是否将审批拒绝<' + e.activitySub + '>?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => {
+        return err
+      })
+      // 如果商家点击确定返回字符串 confirm
+      // 如果商家点击取消返回字符串 cancel
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('取消本次审批')
+      }
+      const { data } = await notAgreeActivity(e.activityId)
+      if (data.code === 20000) {
+        this.$notify({
+          title: '成功',
+          message: '<' + e.activitySub + '>已拒绝',
+          type: 'success',
+          duration: 2000
+        })
+      }
+      this.getApplyActivity()
+      this.getAssList()
+      console.log(data)
     }
   }
 }

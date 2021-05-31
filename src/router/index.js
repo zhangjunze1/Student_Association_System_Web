@@ -111,7 +111,7 @@ const routes = [
         component: () => import('../views/Information1/LeaderCenter/AssControl.vue')
       },
       {
-        path: '/myAss/:assId/activity',
+        path: '/myAss/:assId/activity1',
         name: 'AssItem1',
         component: () => import('../views/Information1/MyCenter/AssItem1.vue')
       },
@@ -129,6 +129,11 @@ const routes = [
         path: '/applyActivity',
         name: 'ApplyActivity',
         component: () => import('../views/Information1/LeaderCenter/ApplyActivity.vue')
+      },
+      {
+        path: '/activity/:activityId/activityMember1',
+        name: 'ActivityMember1',
+        component: () => import('../views/Information1/AssRelevent/ActivityMember1.vue')
       }
     ]
   },
@@ -181,6 +186,11 @@ const routes = [
         path: '/activity2/:activityId/endcontent2',
         name: 'ActivityEndContent2',
         component: () => import('../views/AdminInformation2/Control/ActivityEndContent2.vue')
+      },
+      {
+        path: '/activity2/:activityId/activityMember',
+        name: 'ActivityMember',
+        component: () => import('../views/AdminInformation2/Control/ActivityMember.vue')
       }
     ]
   }

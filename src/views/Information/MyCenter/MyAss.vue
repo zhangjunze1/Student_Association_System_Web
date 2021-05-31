@@ -52,14 +52,14 @@
           label="社长">
         </el-table-column>
 
-<!--        <el-table-column-->
-<!--          label="操作"-->
-<!--          width="180">-->
-<!--          <template slot-scope="scope">-->
-<!--            <el-button type="primary" size="mini" icon="el-icon-edit" @click="showEditDialog(scope.row.userId)"></el-button>-->
-<!--            <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeUserById(scope.row.userId)"></el-button>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
+        <!--        <el-table-column-->
+        <!--          label="操作"-->
+        <!--          width="180">-->
+        <!--          <template slot-scope="scope">-->
+        <!--            <el-button type="primary" size="mini" icon="el-icon-edit" @click="showEditDialog(scope.row.userId)"></el-button>-->
+        <!--            <el-button type="danger" size="mini" icon="el-icon-delete" @click="removeUserById(scope.row.userId)"></el-button>-->
+        <!--          </template>-->
+        <!--        </el-table-column>-->
       </el-table>
       <!--分页功能-->
       <div class="block">
@@ -124,21 +124,16 @@ export default {
     },
     handleTaskItemClick (e) {
       console.log(e.assName)
-      this.$router.push({ path: '/myAss/' + e.assId + '/activity', query: { name: e.assName, state: e.memberAssState } })
+      this.$router.push({ path: '/myAss/' + e.assId + '/activity', query: { name: e.assName, state: e.memberAssState, success: 1 } })
     },
     async getMyAssListPage () {
       const { data } = await findMyAssListPage(this.current, this.pageSize, this.$root.USER.id)
       console.log(data)
       // eslint-disable-next-line eqeqeq
-      if (data.code == 3020) {
-        this.$message({
-          message: '您尚未参加任何社团噢~',
-          type: 'warning'
-        })
-      } else {
-        this.myAssList = data.data.myAssList
-        this.total = data.data.total
-      }
+
+      this.myAssList = data.data.myAssList
+      this.total = data.data.total
+
       // eslint-disable-next-line eqeqeq
 
       this.loading = false
