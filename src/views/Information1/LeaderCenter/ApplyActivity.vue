@@ -77,6 +77,7 @@
             <el-button v-if="scope.row.activityState==='活动结束'&&scope.row.activityEndContent!=null" type="primary" size="mini" icon="el-icon-search" @click="showEndConcentDialog(scope.row)">活动结束</el-button>
             <el-button v-if="scope.row.activityState==='报名中'&&scope.row.activityEndContent==null" type="success" size="mini" icon="el-icon-circle-check" @click="endApply(scope.row)">报名结束</el-button>
             <el-button v-if="scope.row.activityState==='报名结束'&&scope.row.activityEndContent==null" type="warning" size="mini" icon="el-icon-plus" @click="endActivity(scope.row)">活动结语</el-button>
+            <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteActivity(scope.row)"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -225,7 +226,14 @@
 
 <script>
 
-import { addActivityPic, addEndActivity, addNewActivity, endActivityApply, findAssActivityPage } from '@/api/activity'
+import {
+  addActivityPic,
+  addEndActivity,
+  addNewActivity,
+  deleteActivityByActivityId,
+  endActivityApply,
+  findAssActivityPage
+} from '@/api/activity'
 
 export default {
   name: 'ApplyActivity',
@@ -496,6 +504,19 @@ export default {
       }
       this.endDialogVisible = false
       this.getAssActivity()
+    },
+    async deleteActivity (e) {
+      const { data } = await deleteActivityByActivityId(e.activityId)
+      if (data.code === 20000) {
+        this.$notify({
+          title: '成功',
+          message: '<' + e.activitySub + '>已删除',
+          type: 'success',
+          duration: 2000
+        })
+      }
+      this.getAssActivity()
+      console.log(data)
     }
   }
 }
