@@ -53,6 +53,7 @@
             </el-dropdown-menu>
           </el-dropdown>
         </div>
+
       </el-header>
       <el-main>
         <!--路由视图-->
@@ -174,6 +175,7 @@ export default {
   color: #FFFFFF;
   align-items: center;
   font-size: 20px;
+
 /*左边的logo和标题*/
 .left_box{
   display: flex;
@@ -242,11 +244,11 @@ span{
 }
 .item {
   margin-top: 0px;
-  margin-right: -1000px;
+  margin-right: -34.5rem;
 }
 .item1 {
   margin-top: 0px;
-  margin-right: -600px;
+  margin-right: -20.5rem;
 }
 .footer{flex: 0;background: #2c3e50}
 </style>
