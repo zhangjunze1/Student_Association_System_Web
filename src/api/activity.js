@@ -181,3 +181,18 @@ export const addEndActivity = (activityId, activityEndContent, imageUrl) => {
     }
   })
 }
+
+/**
+ * 删除活动
+ * @param activityId
+ * @returns {AxiosPromise}
+ */
+export const deleteActivityByActivityId = (activityId) => {
+  return request({
+    url: '/activity/deleteActivityByActivityId',
+    method: 'POST',
+    params: {
+      activityId
+    }
+  })
+}

@@ -64,6 +64,7 @@
             <el-button type="primary" size="mini" icon="el-icon-search" @click="showConcentDialog(scope.row)">报名通知</el-button>
             <el-button v-if="scope.row.activityState==='活动结束'&&scope.row.activityEndContent!=''" type="primary" size="mini" icon="el-icon-search" @click="showEndConcentDialog(scope.row)">活动结束</el-button>
             <el-button v-if="ifInAss==='已通过'&&scope.row.activityState==='报名中'&&ifSuccess==1" type="warning" size="mini" icon="el-icon-edit" @click="applyFor(scope.row)">申请</el-button>
+            <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteActivity(scope.row)"></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -89,7 +90,7 @@
 
 <script>
 
-import { findAssActivityPage } from '@/api/activity'
+import { deleteActivityByActivityId, findAssActivityPage } from '@/api/activity'
 import { applyForActivity } from '@/api/system'
 
 export default {
@@ -206,6 +207,19 @@ export default {
         })
       }
       this.getAssActivity()
+    },
+    async deleteActivity (e) {
+      const { data } = await deleteActivityByActivityId(e.activityId)
+      if (data.code === 20000) {
+        this.$notify({
+          title: '成功',
+          message: '<' + e.activitySub + '>已删除',
+          type: 'success',
+          duration: 2000
+        })
+      }
+      this.getAssActivity()
+      console.log(data)
     }
     // ,
     // handleAssItemClick (e) {
