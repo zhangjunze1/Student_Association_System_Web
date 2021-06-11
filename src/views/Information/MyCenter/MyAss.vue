@@ -52,10 +52,11 @@
           label="社长">
         </el-table-column>
         <el-table-column
-          label="公告"
+          label="操作"
           width="180">
           <template slot-scope="scope">
             <el-button type="primary" size="mini" icon="el-icon-s-grid" @click="showNotice(scope.row)">公告</el-button>
+            <el-button type="danger" size="mini" icon="el-icon-circle-close" @click="deleteMember(scope.row)">退出</el-button>
           </template>
         </el-table-column>
         <!--        <el-table-column-->
@@ -89,6 +90,7 @@
 <script>
 
 import { findMyAssListPage } from '@/api/assData'
+import { deleteMemberFromAss } from '@/api/system'
 
 export default {
   name: 'MyAss',
@@ -151,6 +153,40 @@ export default {
       // eslint-disable-next-line eqeqeq
 
       this.loading = false
+    },
+    async deleteMember (e) {
+      const confirmResult = await this.$confirm('将退出<' + e.assName + '>?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => {
+        return err
+      })
+      // 如果商家点击确定返回字符串 confirm
+      // 如果商家点击取消返回字符串 cancel
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('取消本次退出社团操作')
+      }
+      // eslint-disable-next-line eqeqeq
+      if (e.memberAssState == '申请中') {
+        this.$notify({
+          title: '警告',
+          message: '您尚未成为<' + e.assName + '>社团一员，无法进行退出社团的操作',
+          type: 'warning',
+          duration: 2000
+        })
+      } else {
+        const { data } = await deleteMemberFromAss(e.assId, this.$root.USER.id)
+        if (data.code === 20000) {
+          this.$notify({
+            title: '成功',
+            message: '成功退出<' + e.assName + '>',
+            type: 'success',
+            duration: 2000
+          })
+        }
+        this.getMyAssListPage()
+      }
     }
   }
 }
