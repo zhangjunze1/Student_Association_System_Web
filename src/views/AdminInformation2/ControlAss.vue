@@ -175,6 +175,12 @@ export default {
       if (this.$root.ASSAPPLY.applyNum < 0) {
         this.$root.ASSAPPLY.applyNum = 0
       }
+      this.$notify({
+        title: '成功',
+        message: '已同意<' + e.assLeader + '>建立<' + e.assName + '>',
+        type: 'success',
+        duration: 2000
+      })
       this.getAssAllList()
       console.log(data)
     },
@@ -184,6 +190,12 @@ export default {
       if (this.$root.ASSAPPLY.applyNum < 0) {
         this.$root.ASSAPPLY.applyNum = 0
       }
+      this.$notify({
+        title: '成功',
+        message: '已拒绝<' + e.assLeader + '>建立<' + e.assName + '>',
+        type: 'success',
+        duration: 2000
+      })
       this.getAssAllList()
       console.log(data)
     }
