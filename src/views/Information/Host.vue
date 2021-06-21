@@ -6,14 +6,18 @@
         <el-breadcrumb-item :to="{ path: '/main' }">首页</el-breadcrumb-item>
         <el-breadcrumb-item>主界面</el-breadcrumb-item>
       </el-breadcrumb>
+      <square4/>
     </div>
+
   </div>
 
 </template>
 
 <script>
+import Square4 from '../Chart/Square4'
 export default {
-  name: 'Host'
+  name: 'Host',
+  components: { Square4 }
 }
 </script>
 
