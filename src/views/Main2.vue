@@ -26,7 +26,7 @@
     <el-container>
       <!--头部布局-->
       <el-header >
-        <span style="margin-right: 20px; font-size: 18px;color: black;size: 20px">{{this.$root.USER.trueName }}{{this.$root.USER.position }},欢迎你的归来！</span>
+        <span style="margin-left: 20px; margin-right: 20px; font-size: 18px;color: black;size: 20px">{{this.$root.USER.trueName }}{{this.$root.USER.position }},欢迎你的归来！</span>
 
         <el-badge :value="this.$root.ASSAPPLY.applyNum" class="item">
           <el-button size="small" @click="changeVue">社团申请</el-button>
@@ -176,62 +176,62 @@ export default {
   align-items: center;
   font-size: 20px;
 
-/*左边的logo和标题*/
-.left_box{
-  display: flex;
-  align-items: center;
-  font-size: 30px;
-  color: #F0F8FF;
-/*logo*/
-img{
-  width: 55px;
-  height: 55px;
-  border-radius: 30%;
-  margin: 0px 0px 5px 5px;
-}
-/*标题*/
-span{
-  margin-left: 15px;
-}
-}
-/*右边的登录头像*/
-.right_box{
-.el-dropdown>img{
-  height: 55px;
-  width: 55px;
-  border-radius: 50%;
-  background-color: #FFFFFF;
-  margin: 0px 15px 0px 0px;
-  background-size: contain;
-}
-}
+  /*左边的logo和标题*/
+  .left_box{
+    display: flex;
+    align-items: center;
+    font-size: 30px;
+    color: #F0F8FF;
+    /*logo*/
+    img{
+      width: 55px;
+      height: 55px;
+      border-radius: 30%;
+      margin: 0px 0px 5px 5px;
+    }
+    /*标题*/
+    span{
+      margin-left: 15px;
+    }
+  }
+  /*右边的登录头像*/
+  .right_box{
+    .el-dropdown>img{
+      height: 55px;
+      width: 55px;
+      border-radius: 50%;
+      background-color: #FFFFFF;
+      margin: 0px 15px 0px 0px;
+      background-size: contain;
+    }
+  }
 
 }
 /*侧边栏*/
 .el-aside {
   background-color: #001529;
   text-align: left;
-.el-menu{
-  border-right: none;
-}
-/*展开/收起*/
-.toggle_box{
-  background-color: white;
-  font-size: 15px;
-  font-weight: bold;
-  line-height: 25px;
-  color: black;
-  letter-spacing: 0.2em;
-  text-align: center;
-  cursor: pointer;
-}
-.title_box_main{
-  display: flex;
-  align-items: center;
-  font-size: 20px;
-  height: 58px;
-  color: #FFFFFF;
-}
+  .el-menu{
+    border-right: none;
+  }
+  /*展开/收起*/
+  .toggle_box{
+    background-color: white;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 25px;
+    color: black;
+    letter-spacing: 0.2em;
+    text-align: center;
+    cursor: pointer;
+  }
+  .title_box_main{
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    height: 58px;
+    color: #FFFFFF;
+  }
 }
 /*内容主体*/
 .el-main {
