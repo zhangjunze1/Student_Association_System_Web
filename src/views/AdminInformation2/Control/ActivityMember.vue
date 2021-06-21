@@ -76,6 +76,7 @@
 <script>
 
 import { findActivityMembers } from '@/api/user'
+import { notagreeUserApplyActivity } from '@/api/system'
 
 export default {
   name: 'ActivityMember',
@@ -138,6 +139,31 @@ export default {
           })
         }
       })
+    },
+    async activityMemberDelete (e) {
+      const confirmResult = await this.$confirm('删除<' + e.userTrueName + '>参加<' + this.$route.query.activity.activitySub + '>的记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => {
+        return err
+      })
+      // 如果商家点击确定返回字符串 confirm
+      // 如果商家点击取消返回字符串 cancel
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('已经取消本次操作')
+      }
+      const { data } = await notagreeUserApplyActivity(this.$route.query.activity.activityId, e.userId)
+      if (data.code === 20000) {
+        this.$notify({
+          title: '成功',
+          message: '已成功删除<' + e.userTrueName + '>参加<' + this.$route.query.activity.activitySub + '>的记录',
+          type: 'success',
+          duration: 2000
+        })
+      }
+      this.getActivityMembers()
+      console.log(data)
     }
   }
 

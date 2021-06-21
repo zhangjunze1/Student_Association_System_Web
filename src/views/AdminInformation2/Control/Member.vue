@@ -89,11 +89,6 @@
         label="手机号码">
       </el-table-column>
       <el-table-column
-        prop="memberAssState"
-        label="用户状态"
-        width="100">
-      </el-table-column>
-      <el-table-column
         label="操作"
         width="180">
         <template slot-scope="scope">

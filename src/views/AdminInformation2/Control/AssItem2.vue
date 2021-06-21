@@ -157,6 +157,18 @@ export default {
       this.$router.push({ path: '/activity2/' + e.activityId + '/activityMember', query: { activity: e, assName: this.$route.query.name } })
     },
     async deleteActivity (e) {
+      const confirmResult = await this.$confirm('此操作将永久删除该活动, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => {
+        return err
+      })
+      // 如果商家点击确定返回字符串 confirm
+      // 如果商家点击取消返回字符串 cancel
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('已经取消删除')
+      }
       const { data } = await deleteActivityByActivityId(e.activityId)
       if (data.code === 20000) {
         this.$notify({
