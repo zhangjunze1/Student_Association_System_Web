@@ -145,3 +145,14 @@ export const findActivityMembers = (current, size, activityId) => {
     }
   })
 }
+
+/**
+ * 获取用户score rank
+ * @returns {AxiosPromise}
+ */
+export const getUserRank = () => {
+  return request({
+    url: '/user/rank',
+    method: 'GET'
+  })
+}

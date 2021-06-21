@@ -226,3 +226,14 @@ export const editAssNotice = (assId, notice) => {
     }
   })
 }
+
+/**
+ * 获取社团-活动统计信息
+ * @returns {AxiosPromise}
+ */
+export const getAssAct = () => {
+  return request({
+    url: '/assActivity/assActStatistics',
+    method: 'GET'
+  })
+}
